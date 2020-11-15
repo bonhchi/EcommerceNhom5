@@ -1,0 +1,35 @@
+﻿@using PCWeb.Models.Name
+@{
+    ViewData["Title"] = "Linh kiện";
+}
+@model List<PCComponent>
+<br />
+<h3>Số lượng sản phẩm: @Model.Count</h3>
+<p><a class="btn btn-primary" asp-controller="Component" asp-action="Add">Thêm</a></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên Linh kiện</th>
+            <th>Loại linh kiện</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            int i = 1;
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(i++)</td>
+                    <td>@item.Product.ProductName</td>
+                    <td>@item.ComponentCategory.ComponentCategoryName</td>
+                    <td>
+                        <a class="btn btn-outline-danger" asp-area="Admin" asp-controller="Component" asp-action="Delete" asp-route-id="@item.PCComponentId">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

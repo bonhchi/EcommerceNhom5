@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "Confirm";
+}
+<br />
+@if (ViewBag.Status == null)
+{
+    <h2 class="text-center">Không có gì hết</h2>
+}
+else
+{
+    <h2 class="text-center">Cảm ơn quý khách đã mua hàng ở PCBang</h2>
+    <div class="row justify-content-center">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-info">Quay về trang chủ</a>
+    </div>
+    
+}
+

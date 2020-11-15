@@ -1,0 +1,14 @@
+﻿@model PCWeb.Models.Contact
+@{
+    ViewData["Title"] = "Delete";
+}
+<h3>Bạn có chắc chắn xóa liên hệ này không?</h3>
+<br />
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ContactId" />
+        <input type="submit" value="Xóa" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-info">Quay về danh sách</a>
+    </form>
+</div>
+
