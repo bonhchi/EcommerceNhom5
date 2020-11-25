@@ -105,6 +105,11 @@ namespace PCWeb.Areas.Admin.Controllers
                 newProduct.ProductQuantity = product.ProductQuantity;
                 newProduct.CategoryId = product.CategoryId;
                 dataContext.Products.Add(newProduct);
+                Revenue revenue = new Revenue()
+                {
+                    ProductId = product.ProductId,
+                };
+                dataContext.Revenues.Add(revenue);
                 dataContext.SaveChanges();
                 return RedirectToAction("Index", "Product");
             }
@@ -185,6 +190,8 @@ namespace PCWeb.Areas.Admin.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == id);
+            Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == id);
+            revenue.DateExpired = DateTime.Now;
             dataContext.Products.Remove(product);
             dataContext.SaveChanges();
             return RedirectToAction("Index", "Product");

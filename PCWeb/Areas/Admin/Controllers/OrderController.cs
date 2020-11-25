@@ -83,6 +83,19 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             Order changeCondition = dataContext.Orders.FirstOrDefault(p => p.OrderId == id);
             changeCondition.OrderConditionId = order.OrderConditionId;
+            if(order.OrderConditionId == 5)
+            {
+                var orderList = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
+                foreach(var item in orderList)
+                {
+                    dataContext.RevenueDetails.Add(new RevenueDetail()
+                    {
+                        RevenueId = item.ProductId,
+                        DateIssue = DateTime.Now,
+                        Quantity = item.Quantity
+                    });
+                }
+            };
             dataContext.SaveChanges();
             return RedirectToAction("Index", "Order");
         }

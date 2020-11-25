@@ -12,6 +12,7 @@ namespace PCWeb.Models
         public Product Product { get; set; }
         public int ProductId { get; set; }
         public int RevenueDetailId { get; set; }
+        public DateTime DateExpired { get; set; }
         public List<RevenueDetail> RevenueDetails { get; set; }
         
     }

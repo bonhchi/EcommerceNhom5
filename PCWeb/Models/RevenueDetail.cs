@@ -10,6 +10,7 @@ namespace PCWeb.Models
         public int RevenueDetailId { get; set; }
         public int RevenueId { get; set; }
         public DateTime DateIssue { get; set; }
+        public int Quantity { get; set; }
         public Revenue Revenue { get; set; }
     }
 }
