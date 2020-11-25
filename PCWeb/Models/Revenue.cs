@@ -11,8 +11,8 @@ namespace PCWeb.Models
         public int RevenueId { get; set; }
         public Product Product { get; set; }
         public int ProductId { get; set; }
-        public int Quantity { get; set; }
-        public double RevenueTotal { get; set; }
-        public double RevenueReality { get; set; }
+        public int RevenueDetailId { get; set; }
+        public List<RevenueDetail> RevenueDetails { get; set; }
+        
     }
 }

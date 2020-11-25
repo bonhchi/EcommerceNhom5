@@ -38,6 +38,7 @@ namespace PCWeb.Data
         public DbSet<Power> Powers { get; set; }
         public DbSet<PCComponent> PCComponents { get; set; }
         public DbSet<ComponentCategory> ComponentCategories { get; set; }
+        public DbSet<RevenueDetail> RevenueDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
