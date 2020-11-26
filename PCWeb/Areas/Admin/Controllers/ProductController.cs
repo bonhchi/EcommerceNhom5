@@ -105,11 +105,18 @@ namespace PCWeb.Areas.Admin.Controllers
                 newProduct.ProductQuantity = product.ProductQuantity;
                 newProduct.CategoryId = product.CategoryId;
                 dataContext.Products.Add(newProduct);
-                Revenue revenue = new Revenue()
+                dataContext.SaveChanges();
+                Revenue newRevenue = new Revenue()
                 {
-                    ProductId = product.ProductId,
+                    ProductCode = newProduct.ProductCode,
+                    ProductImage = newProduct.ProductImage,
+                    ProductPrice = newProduct.ProductPrice,
+                    ProductName = newProduct.ProductName,
+                    ProductSeries = newProduct.ProductSeries,
+                    ProductId = newProduct.ProductId,
+                    DayCreate = newProduct.DayCreate,
                 };
-                dataContext.Revenues.Add(revenue);
+                dataContext.Revenues.Add(newRevenue);
                 dataContext.SaveChanges();
                 return RedirectToAction("Index", "Product");
             }
@@ -192,6 +199,7 @@ namespace PCWeb.Areas.Admin.Controllers
             Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == id);
             Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == id);
             revenue.DateExpired = DateTime.Now;
+            dataContext.SaveChanges();
             dataContext.Products.Remove(product);
             dataContext.SaveChanges();
             return RedirectToAction("Index", "Product");

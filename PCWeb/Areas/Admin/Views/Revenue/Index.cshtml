@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "Index";
 }
-@model List<Order>
-<h2 class="text-md-center">Đơn hàng</h2>
+@model List<Revenue>
+<h2 class="text-md-center">Doanh thu</h2>
 <br />
 <form class="row" asp-controller="Order" asp-action="Index" asp-area="Admin" method="get">
     <div class="col-sm-3 text-right form-group">
@@ -18,16 +18,16 @@
         <button type="submit" class="btn btn-success">Tìm</button>
     </div>
 </form>
-<br/>
+<br />
 <h2>Số lượng đơn hàng: @Model.Count</h2>
 <table class="table">
     <thead>
         <tr>
             <th>STT</th>
-            <th>Tên khách hàng</th>
-            <th>Email</th>
-            <th>Trạng thái</th>
-            <th>Ngày đặt</th>
+            <th>Tên sản phẩm</th>
+            <th>Ngày thêm</th>
+            <th>Số lượng đã mua</th>
+            <th>Số tiền</th>
             <th></th>
         </tr>
     </thead>
@@ -35,23 +35,21 @@
         @if (Model != null)
         {
             int i = 1;
-            @foreach (var item in Model)
+            @for(int j = 0; j < Model.Count; j++)
             {
                 <tr>
                     <td>@(i++)</td>
-                    <td>@item.CusName</td>
-                    <td>@item.Email</td>
-                    <td>@item.OrderCondition.OrderConditionName</td>
-                    <td>@item.OrderDate.ToString("dd/MM/yyyy")</td>
-                    <td>
+                    <td>@Model[j].ProductName</td>
+                    <td>@Model[j].DayCreate.ToString("dd/MM/yyyy")</td>
+                    <td>@ViewBag.Quantity[j]</td>
+                    <td>@ViewBag.Total[j]</td>
+                    @*<td>
                         <a class="btn btn-outline-info" asp-controller="Order" asp-action="Detail" asp-route-id="@item.OrderId">Chi tiết đơn hàng</a>
                         <a class="btn btn-outline-primary" asp-controller="Order" asp-action="Condition" asp-route-id="@item.OrderId">Trạng thái</a>
                         <a class="btn btn-outline-danger" asp-controller="Order" asp-action="Delete" asp-route-id="@item.OrderId">Xóa</a>
-                    </td>
+                    </td>*@
                 </tr>
             }
         }
     </tbody>
 </table>
-
-

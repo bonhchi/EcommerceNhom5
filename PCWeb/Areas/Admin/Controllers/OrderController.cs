@@ -86,13 +86,18 @@ namespace PCWeb.Areas.Admin.Controllers
             if(order.OrderConditionId == 5)
             {
                 var orderList = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
+                List<Product> products = new List<Product>();
                 foreach(var item in orderList)
                 {
+                    Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                    products.Add(product);
+                    var revenueId = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId).RevenueId;
                     dataContext.RevenueDetails.Add(new RevenueDetail()
                     {
-                        RevenueId = item.ProductId,
+                        RevenueId = revenueId,
                         DateIssue = DateTime.Now,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        PriceReality = item.Product.ProductPrice
                     });
                 }
             };

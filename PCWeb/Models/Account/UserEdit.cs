@@ -21,7 +21,6 @@ namespace PCWeb.Models.Account
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         [Required(ErrorMessage = "Ngày sinh không được bỏ trống")]
-        
         public DateTime DayOfBirth { get; set; }
         [MinLength(10)]
         [Required(ErrorMessage = "SĐT không được để trống")]
