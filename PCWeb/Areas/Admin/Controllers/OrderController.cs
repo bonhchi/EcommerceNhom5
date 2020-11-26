@@ -30,9 +30,9 @@ namespace PCWeb.Areas.Admin.Controllers
                 OrderCondition orderCondition = dataContext.OrderConditions.FirstOrDefault(p => p.OrderConditionId == item2.OrderConditionId);
                 orderConditions.Add(orderCondition);
             }
-            var query = dataContext.Orders.Where(p => p.Email.Contains(search)).ToList();
             if (!string.IsNullOrEmpty(search))
             {
+                var query = dataContext.Orders.Where(p => p.Email.Contains(search)).ToList();
                 return View(query);
             }
             return View(item);
