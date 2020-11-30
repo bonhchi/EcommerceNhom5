@@ -36,6 +36,7 @@ namespace PCWeb.Areas.Admin.Controllers
         }
         public IActionResult Add()
         {
+            //Buu dep trai
             CPU cpu = new CPU();
             var product = dataContext.PCComponents.Where(p => p.ComponentCategoryId == 1).ToList();
             var cpuList = dataContext.CPUs.ToList();
