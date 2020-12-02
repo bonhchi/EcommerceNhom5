@@ -18,7 +18,7 @@ namespace PCWeb.Controllers
         }
         public IActionResult Index()
         {
-            var item = dataContext.Products.Select(p => p).ToList();
+            var item = dataContext.Products.ToList();
             var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
             var itemPC = dataContext.Products.Where(p => p.CategoryId == 2).ToList();
             var laptopCategory = dataContext.LaptopCategories.Select(p => p).ToList();

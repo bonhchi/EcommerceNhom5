@@ -5,27 +5,61 @@
 
 @model List<Product>
     <br />
-    <h3>PC</h3>
+    <div class="row">
+        <h3>Laptop</h3>
+    </div>
     <br />
     <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-lg-3 col-md-6 mb-4">
-                <div class="card mb-3 card-info">
-                    <a asp-controller="Detail"
-                       asp-action="Index" asp-route-id="@item.ProductId" asp-route-name="@item.ProductName">
-                        <img class="card-img-top"
-                             src="~/images/@item.ProductImage" alt="@item.ProductName">
-                    </a>
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            @item.ProductName
-                        </h4>
-                        <p class="card-text">
-                            @item.ProductPrice.ToString("0,0") đ
-                        </p>
+        <div class="col-lg-3">
+            <div class="row">
+                <h5>Số lượng sản phẩm: @Model.Count</h5>
+            </div>
+            <div class="row">
+                <div class="dropdown">
+                    <button class="btn btn-block dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Thương hiệu</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdown1">
+                        <a href="#" class="dropdown-item">Test1</a>
+                        <a href="#" class="dropdown-item">Test2</a>
+                        <a href="#" class="dropdown-item">Test3</a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="dropdown">
+                    <button class="btn btn-block dropdown-toggle" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CPU</button>
+                    <div class="dropdown-menu" aria-labelledby="dropdown2">
+                        <a href="#" class="dropdown-item">Test1</a>
+                        <a href="#" class="dropdown-item">Test2</a>
+                        <a href="#" class="dropdown-item">Test3</a>
                     </div>
                 </div>
             </div>
-        }
+        </div>
+        <div class="col-lg-9">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card mb-3 card-info">
+                            <a asp-controller="Detail"
+                               asp-action="Index" asp-route-id="@item.ProductId" asp-route-name="@item.ProductName">
+                                <img class="card-img-top"
+                                     src="~/images/@item.ProductImage" alt="@item.ProductName">
+                            </a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    @item.ProductName
+                                </h4>
+                                <p class="card-text">
+                                    @item.ProductPrice.ToString("0,0") đ
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+           
     </div>
