@@ -114,7 +114,7 @@ namespace PCWeb.Areas.Admin.Controllers
                     ProductName = newProduct.ProductName,
                     ProductSeries = newProduct.ProductSeries,
                     ProductId = newProduct.ProductId,
-                    DayCreate = newProduct.DayCreate,
+                    DayCreate = newProduct.DayCreate
                 };
                 dataContext.Revenues.Add(newRevenue);
                 dataContext.SaveChanges();

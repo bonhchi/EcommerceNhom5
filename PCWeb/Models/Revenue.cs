@@ -22,6 +22,7 @@ namespace PCWeb.Models
         [DisplayName("Giá")]
         public double ProductPrice { get; set; }
         public int ProductId { get; set; }
+        [DisplayName("Ngày tạo")]
         public DateTime DayCreate { get; set; }
         public int RevenueDetailId { get; set; }
         [DisplayName("Ngày hết hạn")]

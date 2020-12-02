@@ -28,7 +28,7 @@ namespace PCWeb.Areas.Admin.Controllers
         public IActionResult Detail(int id)
         {
             Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.RevenueId == id);
-            var revenueList = dataContext.Revenues.ToList();
+            var revenueList = dataContext.Revenues.Where(p => p.RevenueId == id).ToList();
             List<int> quantity = new List<int>();
             List<double> allTotal = new List<double>();
             List<RevenueDetail> detail = new List<RevenueDetail>();
@@ -51,9 +51,14 @@ namespace PCWeb.Areas.Admin.Controllers
                     detail.Add(findOne);
                 }
             }
+            string dateCreate = revenue.DayCreate.ToString("dd/MM/yyyy");
+            string dateExpired = revenue.DateExpired.ToString("dd/MM/yyyy");
+            ViewBag.DayCreate = dateCreate;
+            ViewBag.Detail = detail;
+            ViewBag.DayExpried = dateExpired;
             ViewBag.Quantity = quantity;
             ViewBag.Total = allTotal;
-            return View();
+            return View(revenue);
         }
         [HttpGet]
         public IActionResult Search(string search)
@@ -96,7 +101,7 @@ namespace PCWeb.Areas.Admin.Controllers
                     foreach (var item in find)
                     {
                         count += item.Quantity;
-                        total += item.PriceReality;
+                        total += item.Quantity * item.PriceReality;
                     }
                     quantity.Add(count);
                     allTotal.Add(total);
@@ -104,6 +109,7 @@ namespace PCWeb.Areas.Admin.Controllers
             }
             ViewBag.Quantity = quantity;
             ViewBag.Total = allTotal;
+            
         }
     }
 }
