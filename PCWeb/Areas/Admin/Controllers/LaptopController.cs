@@ -33,7 +33,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
                 laptop.Add(product);
             }
-            var categoryList = dataContext.LaptopCategories.Select(p => p).ToList();
+            var categoryList = dataContext.LaptopCategories.ToList();
             ViewBag.Category = categoryList;
             var queryName = dataContext.Laptops.Where(s => s.Product.ProductName.Contains(search)).ToList();
             if (!string.IsNullOrEmpty(search) && name == "all")
@@ -60,7 +60,7 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             Laptop laptop = new Laptop();
             var item = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
-            var itemLaptop = dataContext.Laptops.Select(p => p).ToList();
+            var itemLaptop = dataContext.Laptops.ToList();
             List<Product> itemSelected = item;
             foreach(var item2 in itemLaptop)
             {
@@ -68,7 +68,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 itemSelected.Remove(query);
             }
             ViewBag.Selected = new SelectList(itemSelected, "ProductId", "ProductName");
-            var category = dataContext.LaptopCategories.Select(p => p).ToList();
+            var category = dataContext.LaptopCategories.ToList();
             ViewBag.Category = new SelectList(category, "LaptopCategoryId", "LaptopCategoryName");
             return View(laptop);
         }
@@ -105,7 +105,7 @@ namespace PCWeb.Areas.Admin.Controllers
             {
                 var item = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
                 ViewBag.Selected = new SelectList(item, "ProductId", "ProductName");
-                var category = dataContext.LaptopCategories.Select(p => p).ToList();
+                var category = dataContext.LaptopCategories.ToList();
                 ViewBag.Category = new SelectList(category, "LaptopCategoryId", "LaptopCategoryName");
                 return View(laptop);
             }
@@ -114,7 +114,7 @@ namespace PCWeb.Areas.Admin.Controllers
         public IActionResult Edit(int id)
         {
             Laptop oldLaptop = dataContext.Laptops.FirstOrDefault(p => p.LaptopId == id);
-            var category = dataContext.LaptopCategories.Select(p => p).ToList();
+            var category = dataContext.LaptopCategories.ToList();
             ViewBag.Category = new SelectList(category, "LaptopCategoryId", "LaptopCategoryName");
             return View(oldLaptop);
         }
@@ -148,7 +148,7 @@ namespace PCWeb.Areas.Admin.Controllers
             {
                 var item = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
                 ViewBag.Selected = new SelectList(item, "ProductId", "ProductName");
-                var category = dataContext.LaptopCategories.Select(p => p).ToList();
+                var category = dataContext.LaptopCategories.ToList();
                 ViewBag.Category = new SelectList(category, "LaptopCategoryId", "LaptopCategoryName");
                 return View(laptop);
             }

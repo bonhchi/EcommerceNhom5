@@ -14,33 +14,26 @@
             <div class="row">
                 <h5>Số lượng sản phẩm: @Model.Count</h5>
             </div>
-            @*<div class="row">
-                <div class="dropdown">
-                    <button class="btn btn-block dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Thương hiệu</button>
-                    <div class="dropdown-menu" aria-labelledby="dropdown1">
-                        <a href="#" class="dropdown-item">Test1</a>
-                        <a href="#" class="dropdown-item">Test2</a>
-                        <a href="#" class="dropdown-item">Test3</a>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="dropdown">
-                    <button class="btn btn-block dropdown-toggle" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CPU</button>
-                    <div class="dropdown-menu" aria-labelledby="dropdown2">
-                        <a href="#" class="dropdown-item">Test1</a>
-                        <a href="#" class="dropdown-item">Test2</a>
-                        <a href="#" class="dropdown-item">Test3</a>
-                    </div>
-                </div>
-            </div>*@
             <div class="list-group list-group-flush">
                 <div class="list-group-item">
-                    Test<br/>
-                    <a class="btn" href="#">
-                        Test
-                    </a>
+                    Thương hiệu<br />
+                    <button class="btn" name="brand" href="#" value="PCBang">
+                        PCBang
+                    </button><br />
+                    <button class="btn" name="brand" href="#" value="PCWorld">
+                        PCWorld
+                    </button>
+                </div>
+            </div>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item">
+                    Thương hiệu<br />
+                    <button class="btn" name="cpu" href="#" value="Corei5">
+                        Core i5
+                    </button><br />
+                    <button class="btn" name="cpu" href="#" value="Corei9">
+                        Core i7
+                    </button>
                 </div>
             </div>
         </div>
