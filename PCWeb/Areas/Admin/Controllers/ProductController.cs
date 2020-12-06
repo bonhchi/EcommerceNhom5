@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting.Internal;
 using PCWeb.Data;
 using PCWeb.Helper;
 using PCWeb.Models;
+using PCWeb.Models.Root;
 using PCWeb.Models.Source;
 
 namespace PCWeb.Areas.Admin.Controllers
@@ -217,28 +218,6 @@ namespace PCWeb.Areas.Admin.Controllers
             ViewBag.Category = category.CategoryName;
             ViewBag.Brand = brand.BrandName;
             return View(product);
-        }
-
-        public IActionResult FilterLaptop(string brand, string cpu)
-        {
-            List<string> brandList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "brandList");
-            List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
-            if(brandList == null)
-            {
-                brandList.Add(brand);
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "brandList", brandList);
-            }
-            if(cpuList == null)
-            {
-                cpuList.Add(cpu);
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cpuList", cpuList);
-            }
-            return View();
-        }
-
-        public IActionResult DeleteFilterLaptop()
-        {
-            return View();
         }
     }
 }

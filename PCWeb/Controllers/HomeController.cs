@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PCWeb.Data;
+using PCWeb.Helper;
 using PCWeb.Models;
 using PCWeb.Models.Root;
 using PCWeb.Models.Source;
@@ -131,6 +132,72 @@ namespace PCWeb.Controllers
             }
             else
                 return View(contact);
+        }
+        public IActionResult FilterLaptop(string brand, string cpu)
+        {
+            if (SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList") == null)
+            {
+                List<string> cpuList = new List<string>
+                {
+                    cpu
+                };
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cpuList", cpuList);
+            }
+            else
+            {
+                List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
+                string index = Exist(cpu);
+                if (index != "")
+                    cpuList.Remove(cpu);
+                else
+                    cpuList.Add(cpu);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cpuList", cpuList);
+            }
+            List<string> cpuResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
+            List<Product> result = new List<Product>();
+            List<Laptop> resultLaptop = new List<Laptop>();
+            foreach (var item in cpuResult)
+            {
+                var queryCPU = dataContext.Laptops.Where(p => p.LaptopCPU.Contains(item));
+                foreach (var itemCPU in queryCPU)
+                {
+                    resultLaptop.Add(itemCPU);
+                }
+            }
+            //Bỏ code này vào hàm private
+            for (int i = 0; i < resultLaptop.Count; i++)
+            {
+                if (resultLaptop[i] == null)
+                    break;
+                for (int j = i + 1; j < resultLaptop.Count; j++)
+                {
+                    if (resultLaptop[i].ProductId == resultLaptop[j].ProductId)
+                    {
+                        resultLaptop.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
+            foreach (var item in resultLaptop)
+            {
+                Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                result.Add(product);
+            }
+            return View("Laptop", result);
+        }
+        public IActionResult DeleteFilterLaptop()
+        {
+            return View();
+        }
+        private string Exist(string cpu)
+        {
+            List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
+            for(int i = 0; i < cpuList.Count; i++)
+            {
+                if (cpuList[i] == cpu)
+                    return cpu;
+            }
+            return "";
         }
         public IActionResult Privacy()
         {
