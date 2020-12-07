@@ -16,11 +16,11 @@
         <div class="list-group list-group-flush">
             @foreach (var item in ViewBag.LaptopCategory)
             {
-                <a class="list-group-item list-group-item-action" asp-action="LaptopCategory" asp-controller="Home" asp-route-id="@item.LaptopCategoryId">@item.LaptopCategoryName</a>
+                <a class="list-group-item list-group-item-action" asp-action="Category" asp-controller="Laptop" asp-route-id="@item.LaptopCategoryId">@item.LaptopCategoryName</a>
             }
             @foreach (var item in ViewBag.PCCategory)
             {
-                <a class="list-group-item list-group-item-action" asp-controller="Home" asp-action="PCCategory" asp-route-id="@item.PCCategoryId">@item.PCCategoryName</a>
+                <a class="list-group-item list-group-item-action" asp-controller="Category" asp-action="PC" asp-route-id="@item.PCCategoryId">@item.PCCategoryName</a>
             }
         </div>
     </div>
