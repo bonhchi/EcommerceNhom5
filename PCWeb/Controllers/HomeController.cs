@@ -13,6 +13,9 @@ namespace PCWeb.Controllers
     public class HomeController : Controller
     {
         private readonly DataContext dataContext;
+        private const string KeyCPU = "cpuList";
+        private const string KeyBrand = "brandList";
+        private const string KeyPrice = "priceList";
         public HomeController(DataContext dataContext)
         {
             this.dataContext = dataContext;
@@ -133,27 +136,27 @@ namespace PCWeb.Controllers
             else
                 return View(contact);
         }
-        public IActionResult FilterLaptop(string brand, string cpu)
+        public IActionResult FilterCPULaptop(string cpu)
         {
-            if (SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList") == null)
+            if (SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU) == null)
             {
                 List<string> cpuList = new List<string>
                 {
-                    cpu
+                        cpu
                 };
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cpuList", cpuList);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, KeyCPU, cpuList);
             }
             else
             {
-                List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
-                string index = Exist(cpu);
+                List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
+                string index = ExistCPU(cpu);
                 if (index != "")
                     cpuList.Remove(cpu);
                 else
                     cpuList.Add(cpu);
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cpuList", cpuList);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, KeyCPU, cpuList);
             }
-            List<string> cpuResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
+            List<string> cpuResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
             List<Product> result = new List<Product>();
             List<Laptop> resultLaptop = new List<Laptop>();
             foreach (var item in cpuResult)
@@ -165,15 +168,15 @@ namespace PCWeb.Controllers
                 }
             }
             //Bỏ code này vào hàm private
-            for (int i = 0; i < resultLaptop.Count; i++)
+            for (int i = 0; i < result.Count; i++)
             {
-                if (resultLaptop[i] == null)
+                if (result[i] == null)
                     break;
-                for (int j = i + 1; j < resultLaptop.Count; j++)
+                for (int j = i + 1; j < result.Count; j++)
                 {
-                    if (resultLaptop[i].ProductId == resultLaptop[j].ProductId)
+                    if (result[i].ProductId == result[j].ProductId)
                     {
-                        resultLaptop.RemoveAt(j);
+                        result.RemoveAt(j);
                         break;
                     }
                 }
@@ -185,17 +188,168 @@ namespace PCWeb.Controllers
             }
             return View("Laptop", result);
         }
+
+        public IActionResult FilterBrandLaptop(string brand)
+        {
+            if (SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyBrand) == null)
+            {
+                List<string> brandList = new List<string>
+                {
+                    brand
+                };
+                SessionHelper.SetObjectAsJson(HttpContext.Session, KeyBrand, brandList);
+            }
+            else
+            {
+                List<string> brandList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyBrand);
+                string index = ExistBrand(brand);
+                if (index != "")
+                    brandList.Remove(brand);
+                else
+                    brandList.Add(brand);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, KeyBrand, brandList);
+            }
+            List<string> brandResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyBrand);
+            List<Product> resultTemp = new List<Product>();
+            var brandName = dataContext.Brands.ToList();
+            foreach (var item in brandResult)
+            {
+                var queryBrand = dataContext.Products.Where(p => p.Brand.BrandName.Contains(item));
+                foreach (var itemBrand in queryBrand)
+                {
+                    resultTemp.Add(itemBrand);
+                }
+            }
+            //Bỏ code này vào hàm private
+            for (int i = 0; i < resultTemp.Count; i++)
+            {
+                if (resultTemp[i] == null)
+                    break;
+                for (int j = i + 1; j < resultTemp.Count; j++)
+                {
+                    if (resultTemp[i].ProductId == resultTemp[j].ProductId)
+                    {
+                        resultTemp.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
+            var laptop = dataContext.Laptops.ToList();
+            List<Product> result = new List<Product>();
+            for(int i = 0; i < resultTemp.Count; i++)
+            {
+                for(int j = 0; j < laptop.Count; j++)
+                {
+                    if (resultTemp[i].ProductId == laptop[j].ProductId)
+                        result.Add(resultTemp[i]);
+                }
+            }
+            return View("Laptop", result);
+        }
+        public IActionResult FilterPriceLaptop(string price)
+        {
+            if (SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice) == null)
+            {
+                List<string> priceList = new List<string>
+                {
+                    price
+                };
+                SessionHelper.SetObjectAsJson(HttpContext.Session, KeyPrice, priceList);
+            }
+            else
+            {
+                List<string> priceList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
+                string index = ExistPrice(price);
+                if (index != "")
+                    priceList.Remove(price);
+                else
+                    priceList.Add(price);
+                SessionHelper.SetObjectAsJson(HttpContext.Session, KeyPrice, priceList);
+            }
+            List<string> priceResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
+            List<Product> resultTemp = new List<Product>();
+            List<Product> queryPrice = new List<Product>();
+            foreach (var item in priceResult)
+            {
+                if (item == "20tr")
+                {
+                    queryPrice = dataContext.Products.Where(p => p.ProductPrice >= 20000000 && p.ProductPrice <= 30000000).ToList();
+                }
+                if(item == "60tr")
+                {
+                    queryPrice = dataContext.Products.Where(p => p.ProductPrice >= 60000000 && p.ProductPrice <= 70000000).ToList();
+                }
+                if (item == "120tr")
+                {
+                    queryPrice = dataContext.Products.Where(p => p.ProductPrice >= 120000000).ToList();
+                }
+                if (queryPrice != null)
+                {
+                    foreach (var itemPrice in queryPrice)
+                    {
+                        resultTemp.Add(itemPrice);
+                    }
+                }
+                
+            }
+            //Bỏ code này vào hàm private
+            for (int i = 0; i < resultTemp.Count; i++)
+            {
+                if (resultTemp[i] == null)
+                    break;
+                for (int j = i + 1; j < resultTemp.Count; j++)
+                {
+                    if (resultTemp[i].ProductId == resultTemp[j].ProductId)
+                    {
+                        resultTemp.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
+            var laptop = dataContext.Laptops.ToList();
+            List<Product> result = new List<Product>();
+            for (int i = 0; i < resultTemp.Count; i++)
+            {
+                for (int j = 0; j < laptop.Count; j++)
+                {
+                    if (resultTemp[i].ProductId == laptop[j].ProductId)
+                        result.Add(resultTemp[i]);
+                }
+            }
+            return View("Laptop", result);
+        }
         public IActionResult DeleteFilterLaptop()
         {
             return View();
         }
-        private string Exist(string cpu)
+        private string ExistCPU(string cpu)
         {
-            List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, "cpuList");
+            List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
             for(int i = 0; i < cpuList.Count; i++)
             {
                 if (cpuList[i] == cpu)
                     return cpu;
+            }
+            return "";
+        }
+
+        private string ExistPrice(string price)
+        {
+            List<string> priceList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
+            for (int i = 0; i < priceList.Count; i++)
+            {
+                if (priceList[i] == price)
+                    return price;
+            }
+            return "";
+        }
+        private string ExistBrand(string brand)
+        {
+            List<string> brandList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyBrand);
+            for (int i = 0; i < brandList.Count; i++)
+            {
+                if (brandList[i] == brand)
+                    return brand;
             }
             return "";
         }
