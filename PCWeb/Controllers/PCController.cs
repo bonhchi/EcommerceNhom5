@@ -80,6 +80,11 @@ namespace PCWeb.Controllers
                 else
                     priceList.Add(price);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, KeyPrice, priceList);
+                if (priceList.Count == 0)
+                {
+                    var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 2).ToList();
+                    return itemLaptop;
+                }
             }
             List<string> priceResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
             List<Product> resultTemp = new List<Product>();
@@ -120,10 +125,15 @@ namespace PCWeb.Controllers
             }
             return result;
         }
-        //public IActionResult DeleteFilterLaptop()
-        //{
-        //    return View();
-        //}
+        public IActionResult DeleteFilter()
+        {
+            List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
+            List<string> gpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyGPU);
+            List<string> priceResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
+            SessionHelper.ClearSession(HttpContext.Session);
+            var itemPC = dataContext.Products.Where(p => p.CategoryId == 2).ToList();
+            return View("Index", itemPC);
+        }
         private List<Product> FilterCPU(string cpu)
         {
             if (SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU) == null)
@@ -143,6 +153,11 @@ namespace PCWeb.Controllers
                 else
                     cpuList.Add(cpu);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, KeyCPU, cpuList);
+                if (cpuList.Count == 0)
+                {
+                    var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 2).ToList();
+                    return itemLaptop;
+                }
             }
             List<string> cpuResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
             List<Product> result = new List<Product>();
@@ -182,6 +197,11 @@ namespace PCWeb.Controllers
                 else
                     gpuList.Add(gpu);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, KeyGPU, gpuList);
+                if (gpuList.Count == 0)
+                {
+                    var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 2).ToList();
+                    return itemLaptop;
+                }
             }
             List<string> gpuResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyGPU);
             List<Product> result = new List<Product>();

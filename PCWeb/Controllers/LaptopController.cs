@@ -76,10 +76,17 @@ namespace PCWeb.Controllers
                 List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
                 string index = ExistCPU(cpu);
                 if (index != "")
+                {
                     cpuList.Remove(cpu);
+                }
                 else
                     cpuList.Add(cpu);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, KeyCPU, cpuList);
+                if (cpuList.Count == 0)
+                {
+                    var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
+                    return itemLaptop;
+                }
             }
             List<string> cpuResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
             List<Product> result = new List<Product>();
@@ -119,6 +126,11 @@ namespace PCWeb.Controllers
                 else
                     brandList.Add(brand);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, KeyBrand, brandList);
+                if (brandList.Count == 0)
+                {
+                    var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
+                    return itemLaptop;
+                }
             }
             List<string> brandResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyBrand);
             List<Product> resultTemp = new List<Product>();
@@ -163,6 +175,11 @@ namespace PCWeb.Controllers
                 else
                     priceList.Add(price);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, KeyPrice, priceList);
+                if (priceList.Count == 0)
+                {
+                    var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
+                    return itemLaptop;
+                }
             }
             List<string> priceResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
             List<Product> resultTemp = new List<Product>();
@@ -202,9 +219,14 @@ namespace PCWeb.Controllers
             }
             return result;
         }
-        public IActionResult DeleteFilterLaptop()
+        public IActionResult DeleteFilter()
         {
-            return View();
+            List<string> cpuList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyCPU);
+            List<string> brandList = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyBrand);
+            List<string> priceResult = SessionHelper.GetObjectFromJson<List<string>>(HttpContext.Session, KeyPrice);
+            SessionHelper.ClearSession(HttpContext.Session);
+            var itemLaptop = dataContext.Products.Where(p => p.CategoryId == 1).ToList();
+            return View("Index",itemLaptop);
         }
         private string ExistCPU(string cpu)
         {

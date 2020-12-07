@@ -7,12 +7,15 @@
     <div class="row">
         <h3>Laptop</h3>
     </div>
-    <br />
     <div class="row">
         <div class="col-lg-3">
             <div class="row">
                 <h5>Số lượng sản phẩm: @Model.Count</h5>
             </div>
+            <div class="row">
+                <a class="anchor" asp-action="DeleteFilter" asp-controller="Laptop">Xóa lọc</a>
+            </div>
+            <br />
             <div class="list-group list-group-flush">
                 <div class="list-group-item">
                     Thương hiệu<br />
@@ -48,7 +51,7 @@
                         Từ 60tr - 70 tr
                     </a><br />
                     <a class="btn" asp-action="FilterPriceMain" asp-controller="Laptop" asp-route-price="120tr">
-                        Từ 120tr 
+                        Từ 120tr
                     </a>
                 </div>
             </div>
