@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BraintreeHttp;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using PayPal.Core;
+using PayPal.v1.Payments;
 using PCWeb.Data;
 using PCWeb.Helper;
 using PCWeb.Models;
@@ -13,9 +17,18 @@ namespace PCWeb.Controllers
     public class CartController : Controller
     {
         private readonly DataContext dataContext;
-        public CartController(DataContext dataContext)
+        private readonly IConfiguration config;
+        private readonly string clientId;
+        private readonly string secretKey;
+        private const double exchange = 23220;
+        private const string currency = "USD";
+
+        public CartController(DataContext dataContext, IConfiguration config)
         {
             this.dataContext = dataContext;
+            this.config = config;
+            clientId = config["PaypalSetting:ClientId"];
+            secretKey = config["PaypalSetting:SecretKey"];
         }
         public IActionResult Index()
         {
@@ -103,16 +116,16 @@ namespace PCWeb.Controllers
                 ViewBag.cart = cart;
                 ViewBag.total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
             }
-            var order = new Order();
+            var order = new Models.Order();
             return View(order);
         }
         [HttpPost]
-        public IActionResult Checkout(Order order)
+        public IActionResult Checkout(Models.Order order)
         {
             var cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
             if (ModelState.IsValid)
             {
-                Order orderTemp = new Order
+                Models.Order orderTemp = new Models.Order
                 {
                     OrderDate = DateTime.Now,
                     Phone = order.Phone,
@@ -152,6 +165,93 @@ namespace PCWeb.Controllers
                     return View();
                 return View(order);
             }
+        }
+        public async Task<IActionResult> PaypalCheckout()
+        {
+            var environment = new SandboxEnvironment(clientId, secretKey);
+            var client = new PayPalHttpClient(environment);
+            var cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
+            var itemList = new ItemList()
+            {
+                Items = new List<Item>()
+            };
+            var total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
+            foreach(var item in cart)
+            {
+                itemList.Items.Add(new Item()
+                {
+                    Name = item.Product.ProductName,
+                    Currency = currency,
+                    Price = Math.Round(item.Product.ProductPrice / exchange, 2).ToString(),
+                    Quantity = item.Quantity.ToString(),
+                    Sku = item.Product.ProductSeries,
+                    Tax = "0"
+                });
+
+            }
+            int orderId = dataContext.Orders.Count() + 1;
+            var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+            var payment = new Payment()
+            {
+                Intent = "sale",
+                Transactions = new List<Transaction>()
+                {
+                    new Transaction ()
+                    {
+                        Amount = new Amount()
+                        {
+                            Total = total.ToString(),
+                            Currency = currency,
+                            Details = new AmountDetails
+                            {
+                                Tax = "0",
+                                Shipping = "0",
+                                Subtotal = total.ToString()
+                            }
+                        },
+                        ItemList = itemList,
+                        Description = $"Invoice #{orderId}",
+                        InvoiceNumber = orderId.ToString()
+                    }
+                },
+                //direct đến trang nào đó trả lệnh
+                RedirectUrls = new RedirectUrls()
+                {
+                    CancelUrl = $"{hostname}/Cart/Fail",
+                    ReturnUrl = $"{hostname}/Cart/Checkout",
+                },
+                Payer = new Payer()
+                {
+                    PaymentMethod = "paypal"
+                }
+            };
+            PaymentCreateRequest request = new PaymentCreateRequest();
+            request.RequestBody(payment);
+            try
+            {
+                var response = await client.Execute(request);
+                var statusCode = response.StatusCode;
+                Payment result = response.Result<Payment>();
+                var links = result.Links.GetEnumerator();
+                string paypalRedirectUrl = null;
+                while(links.MoveNext())
+                {
+                    LinkDescriptionObject link = links.Current;
+                    if (link.Rel.ToLower().Trim().Equals("approval_url"))
+                        paypalRedirectUrl = link.Href;
+                }
+                return Redirect(paypalRedirectUrl);   
+            }
+            catch(HttpException httpException)
+            {
+                var statusCode = httpException.StatusCode;
+                var debugId = httpException.Headers.GetValues("PayPal-Debug-Id").FirstOrDefault();
+                return Redirect("/Cart/Fail");
+            }
+        }
+        public IActionResult Fail()
+        {
+            return View();
         }
     }
 }
