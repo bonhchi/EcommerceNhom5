@@ -108,7 +108,7 @@ namespace PCWeb.Controllers
         [HttpGet]
         public IActionResult Checkout()
         {
-            var cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
+            List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
             if (cart == null)
                 return View();
             else
@@ -117,42 +117,78 @@ namespace PCWeb.Controllers
                 ViewBag.total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
             }
             var order = new Models.Order();
+            var paymentMethod = dataContext.PaymentMethods.ToList();
             return View(order);
         }
         [HttpPost]
-        public IActionResult Checkout(Models.Order order)
+        public IActionResult Checkout(Models.Order order, string answer)
         {
-            var cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
+            List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
             if (ModelState.IsValid)
             {
-                Models.Order orderTemp = new Models.Order
+                if(answer == "paypal")
                 {
-                    OrderDate = DateTime.Now,
-                    Phone = order.Phone,
-                    Address = order.Address,
-                    Email = order.Email,
-                    CusName = order.CusName,
-                    OrderConditionId = 1
-                };
-                dataContext.Orders.Add(orderTemp);
-                dataContext.SaveChanges();
-                var query = dataContext.Orders.FirstOrDefault(p => p.OrderId == orderTemp.OrderId);
-                foreach (var item in cart)
-                {
-                    dataContext.OrderDetails.Add(new OrderDetail()
+                    Models.Order orderTemp = new Models.Order
                     {
-                        OrderId = query.OrderId,
-                        ProductId = item.Product.ProductId,
-                        Quantity = item.Quantity,
-                    });
-                    Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.Product.ProductId);
-                    product.ProductQuantity -= item.Quantity;
+                        OrderDate = DateTime.Now,
+                        Phone = order.Phone,
+                        Address = order.Address,
+                        Email = order.Email,
+                        CusName = order.CusName,
+                        OrderConditionId = 1,
+                        PaymentMethodId = 2
+                    };
+                    dataContext.Orders.Add(orderTemp);
+                    dataContext.SaveChanges();
+                    var query = dataContext.Orders.FirstOrDefault(p => p.OrderId == orderTemp.OrderId);
+                    foreach (var item in cart)
+                    {
+                        dataContext.OrderDetails.Add(new OrderDetail()
+                        {
+                            OrderId = query.OrderId,
+                            ProductId = item.Product.ProductId,
+                            Quantity = item.Quantity,
+                        });
+                        Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.Product.ProductId);
+                        product.ProductQuantity -= item.Quantity;
+                    }
+                    dataContext.SaveChanges();
+                    cart.Clear();
+                    TempData["check"] = query.OrderId;
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                    return RedirectToAction("CheckoutPaypal", "Cart");
                 }
-                dataContext.SaveChanges();
-                cart.Clear();
-                TempData["check"] = query.OrderId;
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-                return RedirectToAction("Confirm", "Cart");
+                else
+                {
+                    Models.Order orderTemp = new Models.Order
+                    {
+                        OrderDate = DateTime.Now,
+                        Phone = order.Phone,
+                        Address = order.Address,
+                        Email = order.Email,
+                        CusName = order.CusName,
+                        PaymentMethodId = 1
+                    };
+                    dataContext.Orders.Add(orderTemp);
+                    dataContext.SaveChanges();
+                    var query = dataContext.Orders.FirstOrDefault(p => p.OrderId == orderTemp.OrderId);
+                    foreach (var item in cart)
+                    {
+                        dataContext.OrderDetails.Add(new OrderDetail()
+                        {
+                            OrderId = query.OrderId,
+                            ProductId = item.Product.ProductId,
+                            Quantity = item.Quantity,
+                        });
+                        Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.Product.ProductId);
+                        product.ProductQuantity -= item.Quantity;
+                    }
+                    dataContext.SaveChanges();
+                    cart.Clear();
+                    TempData["check"] = query.OrderId;
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                    return RedirectToAction("Confirm", "Cart");
+                }
             }
             else
             {
@@ -170,7 +206,7 @@ namespace PCWeb.Controllers
         {
             var environment = new SandboxEnvironment(clientId, secretKey);
             var client = new PayPalHttpClient(environment);
-            var cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
+            List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
             var itemList = new ItemList()
             {
                 Items = new List<Item>()
@@ -248,6 +284,14 @@ namespace PCWeb.Controllers
                 var debugId = httpException.Headers.GetValues("PayPal-Debug-Id").FirstOrDefault();
                 return Redirect("/Cart/Fail");
             }
+        }
+        [HttpPost]
+        public IActionResult TestCheckbox(string answer)
+        {
+            if (answer == "1")
+                return Redirect("~/Home/Index");
+            else
+                return Redirect("~/Index");
         }
         public IActionResult Fail()
         {

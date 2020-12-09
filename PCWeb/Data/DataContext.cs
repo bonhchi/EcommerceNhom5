@@ -39,6 +39,7 @@ namespace PCWeb.Data
         public DbSet<PCComponent> PCComponents { get; set; }
         public DbSet<ComponentCategory> ComponentCategories { get; set; }
         public DbSet<RevenueDetail> RevenueDetails { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -207,6 +208,18 @@ namespace PCWeb.Data
                 {
                     Name = "Staff",
                     NormalizedName = "STAFF"
+                }
+            );
+            builder.Entity<PaymentMethod>().HasData(
+                new PaymentMethod
+                {
+                    PaymentMethodId = 1,
+                    PaymentMethodName = "Tiền mặt"
+                },
+                new PaymentMethod
+                {
+                    PaymentMethodId = 2,
+                    PaymentMethodName = "Paypal"
                 }
             );
         }
