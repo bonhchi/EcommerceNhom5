@@ -121,7 +121,7 @@ namespace PCWeb.Controllers
             return View(order);
         }
         [HttpPost]
-        public IActionResult Checkout(Models.Order order, string answer)
+        public async Task<IActionResult> Checkout(Models.Order order, string answer)
         {
             List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
             if (ModelState.IsValid)
@@ -153,10 +153,12 @@ namespace PCWeb.Controllers
                         product.ProductQuantity -= item.Quantity;
                     }
                     dataContext.SaveChanges();
+                    //Bug
                     cart.Clear();
                     TempData["check"] = query.OrderId;
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-                    return RedirectToAction("CheckoutPaypal", "Cart");
+                    Task<IActionResult> actionResult = PaypalCheckout();
+                    return await actionResult;
                 }
                 else
                 {
