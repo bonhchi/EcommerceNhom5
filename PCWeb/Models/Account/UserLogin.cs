@@ -9,11 +9,11 @@ namespace PCWeb.Models.Account
 {
     public class UserLogin
     {
-        [Required]
+        [Required(ErrorMessage = "Nhập email")]
         [EmailAddress]
         [DisplayName("Email")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Nhập password")]
         [DataType(DataType.Password)]
         [DisplayName("Mật khẩu")]
         public string Password { get; set; }

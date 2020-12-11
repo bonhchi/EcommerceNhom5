@@ -35,7 +35,7 @@
                 <div class="form-group row">
                     <label asp-for="DayOfBirth" class="control-label col-md-3"></label>
                     <div class="col-md-9">
-                        <input asp-for="DayOfBirth" class="form-control" />
+                        <input asp-for="DayOfBirth" class="form-control" id="date" onchange="getDay()"/>
                     </div>
                     
                     <span asp-validation-for="DayOfBirth" class="text-danger"> </span>
@@ -65,7 +65,6 @@
                     <div class="col-md-9">
                         <input asp-for="PhoneNumber" class="form-control" />
                     </div>
-                    
                     <span asp-validation-for="PhoneNumber" class="text-danger"> </span>
                 </div>
                 <div class="form-group row">
@@ -95,6 +94,18 @@
 </div>
 
 <br />
+<script>
+    var day = document.getElementById('date');
+    function getDay() {
+        var date = new Date(day);
+        var dd = date.getDate();
+        var mm = date.getMonth() + 1; 
+        var yyyy = date.getFullYear();
+        var today = dd + '/' + mm + '/' + yyyy;
+        document.getElementById('date').innerHTML = today;
+    }
+
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
