@@ -44,7 +44,7 @@
                     <td>@ViewBag.Quantity[j]</td>
                     <td>@ViewBag.Total[j]</td>
                     <td>
-                        <a class="btn btn-outline-info" asp-controller="Revenue" asp-action="Detail" asp-route-id="@Model[j].RevenueId">Chi tiết đơn hàng</a>
+                        <a class="btn btn-outline-info" asp-controller="Revenue" asp-action="Detail" asp-route-id="@Model[j].RevenueId">Chi tiết</a>
                         <a class="btn btn-outline-danger" asp-controller="Revenue" asp-action="Delete" asp-route-id="@Model[j].RevenueId">Xóa</a>
                     </td>
                 </tr>
