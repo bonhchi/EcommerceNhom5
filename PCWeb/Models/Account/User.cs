@@ -14,5 +14,8 @@ namespace PCWeb.Models.Account
         public string Gender { get; set; }
         public DateTime DayOfBirth { get; set; }
         public string Address { get; set; }
+        public int UserGradeId { get; set; }
+        public UserGrade UserGrade { get; set; }
+        public int UserPoint { get; set; }
     }
 }
