@@ -106,6 +106,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 newProduct.DayCreate = DateTime.Now;
                 newProduct.ProductQuantity = product.ProductQuantity;
                 newProduct.CategoryId = product.CategoryId;
+                newProduct.ProductPackage = product.ProductPackage;
                 dataContext.Products.Add(newProduct);
                 dataContext.SaveChanges();
                 Revenue newRevenue = new Revenue()
@@ -173,6 +174,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 oldProduct.ProductWarranty = product.ProductWarranty;
                 oldProduct.ProductQuantity = product.ProductQuantity;
                 oldProduct.CategoryId = product.CategoryId;
+                oldProduct.ProductPackage = product.ProductPackage;
                 oldProduct.DayCreate = DateTime.Now;
                 dataContext.SaveChanges();
                 ViewBag.Status = 1;
@@ -200,6 +202,8 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == id);
             Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == id);
+            List<OrderDetail> orderDetails = dataContext.OrderDetails.Where(p => p.ProductId == id).ToList();
+            DeleteOrder(orderDetails);
             revenue.DateExpired = DateTime.Now;
             dataContext.SaveChanges();
             dataContext.Products.Remove(product);
@@ -218,6 +222,24 @@ namespace PCWeb.Areas.Admin.Controllers
             ViewBag.Category = category.CategoryName;
             ViewBag.Brand = brand.BrandName;
             return View(product);
+        }
+        private void DeleteOrder(List<OrderDetail> orderDetails)
+        {
+            for (int i = 0; i < orderDetails.Count; i++)
+            {
+                if (orderDetails[i] == null)
+                    break;
+                for (int j = i + 1; j < orderDetails.Count; j++)
+                {
+                    if (orderDetails[i].ProductId == orderDetails[j].ProductId)
+                    {
+                        dataContext.OrderDetails.Remove(orderDetails[j]);
+                        dataContext.SaveChanges();
+                        orderDetails.RemoveAt(j);
+                        break;
+                    }
+                }
+            }
         }
     }
 }

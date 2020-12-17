@@ -9,10 +9,10 @@ namespace PCWeb.Models.Account
 {
     public class UserEdit
     {
-        [DisplayName("Họ")]
+        [DisplayName("Tên")]
         [Required(ErrorMessage = "Tên không được để trống")]
         public string FirstName { get; set; }
-        [DisplayName("Tên")]
+        [DisplayName("Họ")]
         [Required(ErrorMessage = "Họ không được để trống")]
         public string LastName { get; set; }
         [DisplayName("Giới tính")]

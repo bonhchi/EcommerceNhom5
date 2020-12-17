@@ -105,13 +105,20 @@
                                 @Html.DisplayFor(model => model.ProductDescription)
                             </td>
                         </tr>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductPackage)
+                            </th>
+                            <td>
+                                @Html.DisplayFor(model => model.ProductPackage)
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 <br />
-@*<h4>Thông số sản phẩm</h4>*@
 <div>
     <a asp-action="Index" class="btn btn-primary">Quay về danh sách</a>
 </div>

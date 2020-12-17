@@ -40,6 +40,10 @@ namespace PCWeb.Data
         public DbSet<ComponentCategory> ComponentCategories { get; set; }
         public DbSet<RevenueDetail> RevenueDetails { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+        public DbSet<Fee> Fees { get; set; }
+        public DbSet<UserGrade> UserGrades { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -222,6 +226,49 @@ namespace PCWeb.Data
                     PaymentMethodName = "Paypal"
                 }
             );
+            builder.Entity<UserGrade>().HasData(
+                new UserGrade
+                {
+                    UserGradeId = 1,
+                    UserGradeEntryPoint = 0,
+                    UserGradeDiscount = 0,
+                    UserGradeName = "Khách hàng thường"
+                },
+                new UserGrade
+                {
+                    UserGradeId = 2,
+                    UserGradeEntryPoint = 200,
+                    UserGradeDiscount = 1,
+                    UserGradeName = "Khách hàng đồng"
+                },
+                new UserGrade
+                {
+                    UserGradeId = 3,
+                    UserGradeEntryPoint = 800,
+                    UserGradeDiscount = 1.25,
+                    UserGradeName = "Khách hàng bạc"
+                },
+                new UserGrade
+                {
+                    UserGradeId = 4,
+                    UserGradeEntryPoint = 1500,
+                    UserGradeDiscount = 1.5,
+                    UserGradeName = "Khách hàng vàng"
+                },
+                new UserGrade
+                {
+                    UserGradeId = 5,
+                    UserGradeEntryPoint = 2000,
+                    UserGradeDiscount = 2,
+                    UserGradeName = "Khách hàng bạch kim"
+                },
+                new UserGrade
+                {
+                    UserGradeId = 6,
+                    UserGradeEntryPoint = 5000,
+                    UserGradeDiscount = 3,
+                    UserGradeName = "Khách hàng kim cương"
+                });
         }
     }
 }

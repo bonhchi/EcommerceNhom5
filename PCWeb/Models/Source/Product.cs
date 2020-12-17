@@ -27,15 +27,18 @@ namespace PCWeb.Models.Source
         [DisplayName("Ngày tạo")]
         public DateTime DayCreate { get; set; }
         [DisplayName("Bảo hành")]
-        [Range(12, 120, ErrorMessage = "Sản phẩm phải được bảo hành trên 12 tháng")]
+        [Range(12, 120, ErrorMessage = "Sản phẩm phải được bảo hành từ 12 tháng 120 tháng")]
         public int ProductWarranty { get; set; }
         [DisplayName("Số lượng")]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn 0")]
         public int ProductQuantity { get; set; }
+        [DisplayName("Tổng trọng lượng")]
+        [Range(0, double.MaxValue, ErrorMessage = "Trọng lượng phải lớn hơn 0")]
+        public double ProductPackage { get; set; }
         public Category Category { get; set; }
         public Brand Brand { get; set; }
-        public List<Promotion> Promotions { get; set; }
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

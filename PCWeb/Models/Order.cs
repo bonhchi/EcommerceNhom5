@@ -29,6 +29,8 @@ namespace PCWeb.Models
         public DateTime OrderDate { get; set; }
         [DisplayName("Lưu ý")]
         public string Note { get; set; }
+        [DisplayName("Tình trạng thanh toán")]
+        public string OrderCheckout { get; set; }
         public int PaymentMethodId { get; set; }
         public int OrderConditionId { get; set; }
         public OrderCondition OrderCondition { get; set; }

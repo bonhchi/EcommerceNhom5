@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PCWeb.Data;
 using PCWeb.Models.Account;
 
 namespace PCWeb.Controllers
@@ -16,12 +17,13 @@ namespace PCWeb.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
-        public AccountController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+        private readonly DataContext _dataContext;
+        public AccountController(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, DataContext dataContext)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _dataContext = dataContext;
         }
         [HttpGet]
         public IActionResult Register()
@@ -42,6 +44,11 @@ namespace PCWeb.Controllers
                 return View(userModel);
             }
             var user = _mapper.Map<User>(userModel);
+            user.UserGradeId = 1;
+            user.UserPoint = 0;
+            var query = _dataContext.UserGrades.FirstOrDefault(p => p.UserGradeId == 1);
+            userModel.UserGradeName = query.UserGradeName;
+            userModel.UserPoint = user.UserPoint;
             var result = await _userManager.CreateAsync(user, userModel.Password);
             if (!result.Succeeded)
             {
@@ -99,6 +106,7 @@ namespace PCWeb.Controllers
         public async Task<IActionResult> Detail(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            var query = _dataContext.UserGrades.ToList();
             var model = new UserInfo
             {
                 FirstName = user.FirstName,
@@ -107,7 +115,9 @@ namespace PCWeb.Controllers
                 Gender = user.Gender,
                 PhoneNumber = user.PhoneNumber,
                 Address = user.Address,
-                DayOfBirth = user.DayOfBirth
+                DayOfBirth = user.DayOfBirth,
+                UserGradeName = user.UserGrade.UserGradeName,
+                UserPoint = user.UserPoint
             };
             ViewBag.Id = id;
             return View(model);
@@ -145,7 +155,7 @@ namespace PCWeb.Controllers
                 user.Email = userModel.Email;
                 user.FirstName = userModel.FirstName;
                 user.LastName = userModel.LastName;
-                //user.Gender = userModel.Gender;
+                user.Gender = userModel.Gender;
                 user.PhoneNumber = userModel.PhoneNumber;
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)

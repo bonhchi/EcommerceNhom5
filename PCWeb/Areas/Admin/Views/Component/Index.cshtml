@@ -3,6 +3,31 @@
     ViewData["Title"] = "Linh kiện";
 }
 @model List<PCComponent>
+<h2 class="text-md-center">Linh kiện </h2>
+<br />
+<form class="row" asp-controller="Laptop" asp-action="Index" asp-area="Admin" method="get">
+    <div class="col-sm-2 text-right form-group">
+        <label class="col-form-label">
+            Tìm kiếm:
+        </label>
+    </div>
+    <div class="form-group col-sm-2">
+        <select name="name" class="form-control">
+            <option value="all">All</option>
+            @*@foreach (var item in ViewBag.Category)
+            {
+                <option value="@item.LaptopCategoryName">@item.LaptopCategoryName</option>
+            }*@
+        </select>
+        @*<span asp-validation-for="@Model[0].LaptopCategoryId" class="text-danger"></span>*@
+    </div>
+    <div class="col-sm-6 form-group">
+        <input type="text" class="input-width form-control mr-sm-2" name="search" placeholder="Nhập tên linh kiện">
+    </div>
+    <div class="col-sm-2 form-group">
+        <button type="submit" class="btn btn-success">Tìm</button>
+    </div>
+</form>
 <br />
 <h3>Số lượng sản phẩm: @Model.Count</h3>
 <p><a class="btn btn-primary" asp-controller="Component" asp-action="Add">Thêm</a></p>

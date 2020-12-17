@@ -9,11 +9,11 @@ namespace PCWeb.Models.Account
 {
     public class UserInfo
     {
-        [DisplayName("Tên")]
-        [Required(ErrorMessage = "Tên không được để trống")]
-        public string FirstName { get; set; }
         [DisplayName("Họ")]
         [Required(ErrorMessage = "Họ không được để trống")]
+        public string FirstName { get; set; }
+        [DisplayName("Tên")]
+        [Required(ErrorMessage = "Tên không được để trống")]
         public string LastName { get; set; }
         [DisplayName("Giới tính")]
         public string Gender { get; set; }
@@ -36,7 +36,9 @@ namespace PCWeb.Models.Account
         [DataType(DataType.Password)]
         [DisplayName("Mật khẩu")]
         public string Password { get; set; }
-        [DisplayName("Chức vụ")]
-        public string RoleName { get; set; }
+        [DisplayName("Điểm tích lũy")]
+        public int UserPoint { get; set; }
+        [DisplayName("Hạng khách hàng")]
+        public string UserGradeName { get; set; }
     }
 }

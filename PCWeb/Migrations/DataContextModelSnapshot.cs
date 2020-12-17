@@ -48,22 +48,22 @@ namespace PCWeb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c3a189dd-fb87-42d8-a153-0581121d5fb6",
-                            ConcurrencyStamp = "a9680fc0-d0a8-46d2-9d10-1de24c88dc13",
+                            Id = "bb09010a-b1e0-4c72-b9f7-cd9448814002",
+                            ConcurrencyStamp = "556723c9-c894-4421-9f07-37bd5a03297e",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "4d8a5f6b-1d34-41a0-8382-8d50201b56b2",
-                            ConcurrencyStamp = "ba45e259-af7e-4361-8565-7e98081de934",
+                            Id = "74979050-d53b-43ad-bd22-3f40f946477d",
+                            ConcurrencyStamp = "9d701b29-de55-42ce-9313-9b61301e2778",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "cf21ef59-b232-45d2-a84c-4e38e18ceaa4",
-                            ConcurrencyStamp = "a0a24131-e022-4271-b359-5971c2c188d8",
+                            Id = "a01f2494-8694-4fc5-9709-819022c8d396",
+                            ConcurrencyStamp = "929d75f7-6eb7-4983-9ba4-ab894a12cee3",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         });
@@ -236,9 +236,15 @@ namespace PCWeb.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserGradeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<int>("UserPoint")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -250,7 +256,74 @@ namespace PCWeb.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("UserGradeId");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("PCWeb.Models.Account.UserGrade", b =>
+                {
+                    b.Property<int>("UserGradeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("UserGradeDiscount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("UserGradeEntryPoint")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserGradeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserGradeId");
+
+                    b.ToTable("UserGrades");
+
+                    b.HasData(
+                        new
+                        {
+                            UserGradeId = 1,
+                            UserGradeDiscount = 0.0,
+                            UserGradeEntryPoint = 0,
+                            UserGradeName = "Khách hàng thường"
+                        },
+                        new
+                        {
+                            UserGradeId = 2,
+                            UserGradeDiscount = 1.0,
+                            UserGradeEntryPoint = 200,
+                            UserGradeName = "Khách hàng đồng"
+                        },
+                        new
+                        {
+                            UserGradeId = 3,
+                            UserGradeDiscount = 1.25,
+                            UserGradeEntryPoint = 800,
+                            UserGradeName = "Khách hàng bạc"
+                        },
+                        new
+                        {
+                            UserGradeId = 4,
+                            UserGradeDiscount = 1.5,
+                            UserGradeEntryPoint = 1500,
+                            UserGradeName = "Khách hàng vàng"
+                        },
+                        new
+                        {
+                            UserGradeId = 5,
+                            UserGradeDiscount = 2.0,
+                            UserGradeEntryPoint = 2000,
+                            UserGradeName = "Khách hàng bạch kim"
+                        },
+                        new
+                        {
+                            UserGradeId = 6,
+                            UserGradeDiscount = 3.0,
+                            UserGradeEntryPoint = 5000,
+                            UserGradeName = "Khách hàng kim cương"
+                        });
                 });
 
             modelBuilder.Entity("PCWeb.Models.Category", b =>
@@ -285,6 +358,30 @@ namespace PCWeb.Migrations
                         });
                 });
 
+            modelBuilder.Entity("PCWeb.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CommentContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommentUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("PCWeb.Models.Contact", b =>
                 {
                     b.Property<int>("ContactId")
@@ -315,6 +412,25 @@ namespace PCWeb.Migrations
                     b.HasKey("ContactId");
 
                     b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("PCWeb.Models.Fee", b =>
+                {
+                    b.Property<int>("FeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("FeeAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("FeeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FeeId");
+
+                    b.ToTable("Fees");
                 });
 
             modelBuilder.Entity("PCWeb.Models.Name.ComponentCategory", b =>
@@ -505,6 +621,9 @@ namespace PCWeb.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OrderCheckout")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderConditionId")
                         .HasColumnType("int");
 
@@ -633,8 +752,14 @@ namespace PCWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<string>("PromotionApply")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PromotionCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PromotionCodeNeed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PromotionName")
                         .IsRequired()
@@ -642,9 +767,31 @@ namespace PCWeb.Migrations
 
                     b.HasKey("PromotionId");
 
-                    b.HasIndex("ProductId");
-
                     b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("PCWeb.Models.Reply", b =>
+                {
+                    b.Property<int>("ReplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReplyContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReplyUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReplyId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("PCWeb.Models.Revenue", b =>
@@ -1332,6 +1479,9 @@ namespace PCWeb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("ProductPackage")
+                        .HasColumnType("float");
+
                     b.Property<double>("ProductPrice")
                         .HasColumnType("float");
 
@@ -1405,6 +1555,24 @@ namespace PCWeb.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PCWeb.Models.Account.User", b =>
+                {
+                    b.HasOne("PCWeb.Models.Account.UserGrade", "UserGrade")
+                        .WithMany()
+                        .HasForeignKey("UserGradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PCWeb.Models.Comment", b =>
+                {
+                    b.HasOne("PCWeb.Models.Source.Product", "Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PCWeb.Models.Name.PCComponent", b =>
                 {
                     b.HasOne("PCWeb.Models.Name.ComponentCategory", "ComponentCategory")
@@ -1450,11 +1618,11 @@ namespace PCWeb.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PCWeb.Models.Promotion", b =>
+            modelBuilder.Entity("PCWeb.Models.Reply", b =>
                 {
-                    b.HasOne("PCWeb.Models.Source.Product", "Product")
-                        .WithMany("Promotions")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("PCWeb.Models.Comment", "Comment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

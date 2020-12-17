@@ -10,7 +10,7 @@
         <tr>
             <th>Tên</th>
             <td>
-                @(Model.FirstName + " " + @Model.LastName)
+                @(Model.LastName + " " + @Model.FirstName)
             </td>
         </tr>
         <tr>
@@ -41,6 +41,20 @@
             <th>Giới tính</th>
             <td>
                 @Model.Gender
+            </td>
+        </tr>
+        <tr>
+            <th>Hạng khách hàng</th>
+            <td>
+                @Model.UserGradeName
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Điểm tích lũy
+            </th>
+            <td>
+                @Model.UserPoint
             </td>
         </tr>
     </table>

@@ -40,9 +40,9 @@ namespace PCWeb.Models.Account
         [Compare("Password", ErrorMessage = "Mật khẩu không trùng khớp")]
         [DisplayName("Nhập lại mật khẩu")]
         public string ConfirmPassword { get; set; }
-        [DisplayName("Điểm thưởng")]
+        [DisplayName("Điểm tích lũy")]
         public int UserPoint { get; set; }
         [DisplayName("Hạng khách hàng")]
-        public string UserGrade { get; set; }
+        public string UserGradeName { get; set; }
     }
 }
