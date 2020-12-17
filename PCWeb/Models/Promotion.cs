@@ -17,7 +17,5 @@ namespace PCWeb.Models
         [MinLength(8, ErrorMessage = "Mã giám giá ít nhất 8 kí tự")]
         [DisplayName("Mã giảm giá")]
         public string PromotionCode { get; set; }
-        [DisplayName("Cần kích hoạt mã giảm giá")]
-        public bool PromotionCodeNeed { get; set; }
     }
 }

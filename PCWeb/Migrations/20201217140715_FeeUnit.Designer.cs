@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PCWeb.Data;
 
 namespace PCWeb.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201217140715_FeeUnit")]
+    partial class FeeUnit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,22 +50,22 @@ namespace PCWeb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bb44f738-d3ea-4883-a80c-7ccc69102eb9",
-                            ConcurrencyStamp = "18a919a9-ea53-4249-98d1-22571a5988ec",
+                            Id = "716bb314-ca10-4c6d-9737-eb546348dbdf",
+                            ConcurrencyStamp = "84d75a40-fb5f-4acd-a65a-61fb303567ad",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "2341388a-9d7a-499f-92be-1077c3059d2c",
-                            ConcurrencyStamp = "005642c1-badb-4dc2-a68f-698b50816271",
+                            Id = "8c0e6bf7-cc3e-40ae-8e3e-b39614bb5ecd",
+                            ConcurrencyStamp = "cd5b841a-f0db-4a30-8730-d6ec02fb9962",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "cee9a515-b909-443b-9f8b-526929c8a678",
-                            ConcurrencyStamp = "1202f039-e42b-45a5-8413-7e0bd07a8d88",
+                            Id = "00e342fb-3a93-4a47-b3e7-7b5d317ea849",
+                            ConcurrencyStamp = "f4836431-0e79-4a8e-864d-7335a5e7e893",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         });
@@ -761,6 +763,9 @@ namespace PCWeb.Migrations
 
                     b.Property<string>("PromotionCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PromotionCodeNeed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PromotionName")
                         .IsRequired()

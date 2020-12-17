@@ -13,6 +13,8 @@ namespace PCWeb.Models.Source
         public string ProductCode { get; set; }
         [DisplayName("Mã vạch")]
         [Required(ErrorMessage = "Thiếu mã vạch")]
+        [RegularExpression(@"^[0-9]+$", ErrorMessage = "Mã vạch không hợp lệ")]
+        [MinLength(10,ErrorMessage = "Mã vạch có ít nhất 10 số")]
         public string ProductSeries { get; set; }
         [DisplayName("Tên sản phẩm")]
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
