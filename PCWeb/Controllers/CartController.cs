@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BraintreeHttp;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PayPal.Core;
@@ -10,6 +11,7 @@ using PayPal.v1.Payments;
 using PCWeb.Data;
 using PCWeb.Helper;
 using PCWeb.Models;
+using PCWeb.Models.Account;
 using PCWeb.Models.Source;
 
 namespace PCWeb.Controllers
@@ -22,7 +24,9 @@ namespace PCWeb.Controllers
         private readonly string secretKey;
         private const double exchange = 23220;
         private const string currency = "USD";
- 
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
         public CartController(DataContext dataContext, IConfiguration config)
         {
             this.dataContext = dataContext;
@@ -37,18 +41,7 @@ namespace PCWeb.Controllers
                 return View();
             else
             {
-                ViewBag.cart = cart;
-                double total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
-                double vat = dataContext.Fees.FirstOrDefault(p => p.FeeId == 2).FeeAmount / 100;
-                double weight = 0;
-                foreach(var item in cart)
-                {
-                    weight += (item.Product.ProductPackage * item.Quantity);
-                }
-                double weightCost = weight * dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
-                ViewBag.VAT = vat.ToString();
-                ViewBag.WeightCost = weightCost.ToString();
-                ViewBag.total = total + vat * total + weightCost;
+                TestViewBag(cart);
             }
             return View();
         }
@@ -98,6 +91,24 @@ namespace PCWeb.Controllers
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
+        private void TestViewBag(List<OrderDetail> cart)
+        {
+            ViewBag.cart = cart;
+            double total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
+            double vat = dataContext.Fees.FirstOrDefault(p => p.FeeId == 2).FeeAmount / 100;
+            double vatFee = vat * total;
+            double weight = 0;
+            foreach (var item in cart)
+            {
+                weight += (item.Product.ProductPackage * item.Quantity);
+            }
+            double weightCost = weight * dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
+            ViewBag.VAT = (vat * 100).ToString();
+            ViewBag.VATfee = vatFee;
+            ViewBag.Weight = weight.ToString();
+            ViewBag.WeightCost = weightCost;
+            ViewBag.total = total + vatFee + weightCost;
+        }
         private int IsExist(int id)
         {
             List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
@@ -123,11 +134,10 @@ namespace PCWeb.Controllers
                 return View();
             else
             {
-                ViewBag.cart = cart;
-                ViewBag.total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
+                
+                TestViewBag(cart);
             }
             var order = new Models.Order();
-            var paymentMethod = dataContext.PaymentMethods.ToList();
             return View(order);
         }
         [HttpPost]
@@ -286,8 +296,7 @@ namespace PCWeb.Controllers
             {
                 if (cart != null)
                 {
-                    ViewBag.cart = cart;
-                    ViewBag.total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
+                    TestViewBag(cart);
                 }
                 else
                     return View();

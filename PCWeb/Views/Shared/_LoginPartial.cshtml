@@ -7,7 +7,7 @@
     {
         <li class="nav-item dropdown">
             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownAccountLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-               title="Welcome">Chào @User.Identity.Name!</a>
+               title="Welcome">Chào @UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).FirstName!</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownAccountLink">
                 <a class="dropdown-item" asp-route-id="@UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).Id" asp-action="Detail" asp-controller="Account">Thông tin tài khoản</a>
                 <a class="dropdown-item" asp-controller="Account"

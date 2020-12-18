@@ -37,7 +37,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 int count = 0;
                 double total = 0;
                 var find = dataContext.RevenueDetails.Where(p => p.RevenueId == revenueList[i].RevenueId).ToList();
-                if (find != null)
+                if (find.Count > 0)
                 {
                     foreach (var item in find)
                     {

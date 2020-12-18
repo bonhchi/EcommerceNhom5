@@ -12,60 +12,60 @@
 }
 else
 {
-    <table class="table-bordered table">
-        <tr>
-            <th>Option</th>
-            <th>STT</th>
-            <th>Tên SP</th>
-            <th>Hình</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Tổng cộng</th>
-        </tr>
-        @if (ViewBag.cart != null)
+<table class="table-bordered table">
+    <tr>
+        <th>STT</th>
+        <th>Tên SP</th>
+        <th>Hình</th>
+        <th>Giá</th>
+        <th>Số lượng/Xóa SP</th>
+        <th>Tổng cộng</th>
+    </tr>
+    @if (ViewBag.cart != null)
+    {
+        @foreach (var item in ViewBag.cart)
         {
-            @foreach (var item in ViewBag.cart)
-            {
-                <tr>
-                    <td>
-                        <a asp-controller="Cart" asp-action="Remove"
-                           asp-route-id="@item.Product.ProductId" class="btn btn-info">Xóa</a>
-                    </td>
-                    <td>@(i++)</td>
-                    <td>@item.Product.ProductName</td>
-                    <td>
-                        <img src="~/images/@item.Product.ProductImage" width="60"
-                             height="60" />
-                    </td>
-                    <td>@item.Product.ProductPrice.ToString("0,0") đ</td>
-                    <td>
-                        <form asp-action="Quantity" asp-controller="Cart" asp-route-id="@item.Product.ProductId" method="get" enctype="multipart/form-data">
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <input value="@item.Quantity" class="form-control" name="quantity" />
-                                </div>
-                                <button type="submit" value="Thêm" class="btn btn-info">Thay đổi</button>
+            <tr>
+                <td>@(i++)</td>
+                <td>@item.Product.ProductName</td>
+                <td>
+                    <img src="~/images/@item.Product.ProductImage" width="60"
+                         height="60" />
+                </td>
+                <td>@item.Product.ProductPrice.ToString("0,0") đ</td>
+                <td>
+                    <form asp-action="Quantity" asp-controller="Cart" asp-route-id="@item.Product.ProductId" method="get" enctype="multipart/form-data">
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <input value="@item.Quantity" class="form-control" name="quantity" />
                             </div>
-
-                        </form>
-                    </td>
-                    <td>
-                        @((item.Product.ProductPrice * item.Quantity).ToString("0,0")) đ
-                    </td>
-                </tr>
-            }
+                            <button type="submit" value="Thêm" class="btn btn-info">Thay đổi</button>
+                        </div>
+                    </form>
+                    <a asp-controller="Cart" asp-action="Remove"
+                       asp-route-id="@item.Product.ProductId" class="btn btn-info">Xóa</a>
+                </td>
+                <td>
+                    @((item.Product.ProductPrice * item.Quantity).ToString("0,0")) đ
+                </td>
+            </tr>
         }
-        <tr>
-           <td align="left" colspan="5">Thuế VAT</td>
-           <td colspan="2">10%</td>
-        </tr>
-        <tr>
-            <td align="left" colspan="5">Tổng cộng</td>
-            <td colspan="2">
-                @ViewBag.total.ToString("0,0") đ
-            </td>
-        </tr>
-    </table>
+    }
+    <tr>
+        <td align="left" colspan="4">Thuế VAT (@ViewBag.VAT %)</td>
+        <td colspan="2">@ViewBag.VATFee.ToString("0,0") đ</td>
+    </tr>
+    <tr>
+        <td align="left" colspan="4">Phí vận chuyển (Số lượng : @ViewBag.Weight kg)</td>
+        <td colspan="2">@ViewBag.WeightCost.ToString("0,0") đ</td>
+    </tr>
+    <tr>
+        <td align="left" colspan="4">Tổng cộng</td>
+        <td colspan="2">
+            @ViewBag.total.ToString("0,0") đ
+        </td>
+    </tr>
+</table>
     <br>
     <a asp-controller="Home" asp-action="Index" class="btn btn-outline-info">
         Tiếp tục mua sắm
