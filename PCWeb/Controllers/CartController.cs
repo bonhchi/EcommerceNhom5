@@ -38,7 +38,17 @@ namespace PCWeb.Controllers
             else
             {
                 ViewBag.cart = cart;
-                ViewBag.total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
+                double total = cart.Sum(item => item.Product.ProductPrice * item.Quantity);
+                double vat = dataContext.Fees.FirstOrDefault(p => p.FeeId == 2).FeeAmount / 100;
+                double weight = 0;
+                foreach(var item in cart)
+                {
+                    weight += (item.Product.ProductPackage * item.Quantity);
+                }
+                double weightCost = weight * dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
+                ViewBag.VAT = vat.ToString();
+                ViewBag.WeightCost = weightCost.ToString();
+                ViewBag.total = total + vat * total + weightCost;
             }
             return View();
         }

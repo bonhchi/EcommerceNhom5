@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PCWeb.Data;
 using PCWeb.Models;
 using System;
@@ -8,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace PCWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Administrator, Staff")]
     public class FeeController : Controller
     {
         private readonly DataContext dataContext;
