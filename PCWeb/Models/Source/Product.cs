@@ -24,6 +24,9 @@ namespace PCWeb.Models.Source
         [DisplayName("Giá")]
         [Range(0, int.MaxValue, ErrorMessage = "Sản phẩm không được có giá dưới 0")]
         public double ProductPrice { get; set; }
+        [DisplayName("Giá khuyến mãi")]
+        [Range(0, int.MaxValue, ErrorMessage = "Sản phẩm không được có giá dưới 0")]
+        public double ProductPriceReality { get; set; }
         [DisplayName("Mô tả sản phẩm")]
         public string ProductDescription { get; set; }
         [DisplayName("Ngày tạo")]

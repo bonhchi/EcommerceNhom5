@@ -1,4 +1,5 @@
 ﻿using PCWeb.Models.Source;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,5 +18,6 @@ namespace PCWeb.Models
         [MinLength(8, ErrorMessage = "Mã giám giá ít nhất 8 kí tự")]
         [DisplayName("Mã giảm giá")]
         public string PromotionCode { get; set; }
+        public List<PromotionDetail> PromotionDetail { get; set; }
     }
 }

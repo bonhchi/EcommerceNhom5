@@ -21,7 +21,6 @@ namespace PCWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Administrator, Staff")]
-    
     public class ProductController : Controller
     {
         private readonly DataContext dataContext;
@@ -107,6 +106,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 newProduct.ProductQuantity = product.ProductQuantity;
                 newProduct.CategoryId = product.CategoryId;
                 newProduct.ProductPackage = product.ProductPackage;
+                newProduct.ProductPriceReality = product.ProductPrice;
                 dataContext.Products.Add(newProduct);
                 dataContext.SaveChanges();
                 Revenue newRevenue = new Revenue()
@@ -176,6 +176,7 @@ namespace PCWeb.Areas.Admin.Controllers
                 oldProduct.CategoryId = product.CategoryId;
                 oldProduct.ProductPackage = product.ProductPackage;
                 oldProduct.DayCreate = DateTime.Now;
+                oldProduct.ProductPriceReality = product.ProductPrice;
                 dataContext.SaveChanges();
                 ViewBag.Status = 1;
                 return RedirectToAction("Index", "Product");

@@ -40,7 +40,15 @@
                                 @Html.DisplayNameFor(model => model.ProductPrice)
                             </th>
                             <td>
-                                @Html.DisplayFor(model => model.ProductPrice)
+                                @Model.ProductPrice.ToString("0,0")
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ProductPriceReality)
+                            </th>
+                            <td>
+                                @Model.ProductPriceReality.ToString("0,0")
                             </td>
                         </tr>
                         <tr>
@@ -48,7 +56,7 @@
                                 @Html.DisplayNameFor(model => model.DayCreate)
                             </th>
                             <td>
-                                @Html.DisplayFor(model => model.DayCreate)
+                                @Model.DayCreate.ToString("dd/MM/yyyy")
                             </td>
                         </tr>
                         <tr>
@@ -110,7 +118,7 @@
                                 @Html.DisplayNameFor(model => model.ProductPackage)
                             </th>
                             <td>
-                                @Html.DisplayFor(model => model.ProductPackage)
+                                @Html.DisplayFor(model => model.ProductPackage) kg
                             </td>
                         </tr>
                     </tbody>

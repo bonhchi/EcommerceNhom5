@@ -128,7 +128,6 @@ namespace PCWeb.Controllers
             {
                 if(answer == "paypal")
                 {
-                    //var productList = dataContext.Products.ToList();
                     var environment = new SandboxEnvironment(clientId, secretKey);
                     var client = new PayPalHttpClient(environment);
                     var itemList = new ItemList()
@@ -208,7 +207,8 @@ namespace PCWeb.Controllers
                             Email = order.Email,
                             CusName = order.CusName,
                             OrderConditionId = 1,
-                            PaymentMethodId = 2
+                            PaymentMethodId = 2,
+                            OrderCheckout = "Đã thanh toán"
                         };
                         dataContext.Orders.Add(orderTemp);
                         dataContext.SaveChanges();
@@ -248,7 +248,8 @@ namespace PCWeb.Controllers
                         Email = order.Email,
                         CusName = order.CusName,
                         PaymentMethodId = 1,
-                        OrderConditionId = 1
+                        OrderConditionId = 1,
+                        OrderCheckout = "Chưa thanh toán"
                     };
                     dataContext.Orders.Add(orderTemp);
                     dataContext.SaveChanges();
