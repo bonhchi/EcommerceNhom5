@@ -124,7 +124,21 @@ namespace PCWeb.Controllers
         public IActionResult Confirm()
         {
             ViewBag.Status = TempData["check"];
-            return View();
+            if (TempData["check"] == null)
+            {
+                return View();
+            }
+            else
+            {
+                string queryString = TempData["check"].ToString();
+                ViewBag.Name = queryString;
+                int queryId = int.Parse(queryString);
+                var order = dataContext.Orders.FirstOrDefault(p => p.OrderId == queryId);
+                List<OrderDetail> cart = dataContext.OrderDetails.Where(p => p.OrderId == order.OrderId).ToList();
+                var productList = dataContext.Products.ToList();
+                TestViewBag(cart);
+                return View();
+            }
         }
         [HttpGet]
         public IActionResult Checkout()

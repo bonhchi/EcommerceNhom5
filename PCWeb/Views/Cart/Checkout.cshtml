@@ -19,22 +19,22 @@
                 {
                 <div class="form-group">
                     <label asp-for="CusName" class="control-label"></label>
-                    <p>@(UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).LastName + " " + UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).FirstName)</p>
+                    <input asp-for="CusName" value="@(UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).LastName + " " + UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).FirstName)" readonly="readonly" class="form-control" />
                     <span asp-validation-for="CusName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Email" class="control-label"></label>
-                    <p>@User.Identity.Name</p>
+                    <input asp-for="Email" value="@User.Identity.Name" readonly="readonly" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Address" class="control-label"></label>
-                    <p>@UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).Address</p>
+                    <input asp-for="Address" value="@UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).Address" readonly="readonly" class="form-control" />
                     <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Phone" class="control-label"></label>
-                    <p>@UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).PhoneNumber</p>
+                    <input asp-for="Phone" value="@UserManager.Users.FirstOrDefault(p => p.Email == User.Identity.Name).PhoneNumber" readonly="readonly" class="form-control" />
                     <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
                 }
