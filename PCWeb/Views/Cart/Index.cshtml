@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using PCWeb.Models.Account
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
     ViewData["Title"] = "Index";
     int i = 1;
 }
@@ -59,6 +63,13 @@ else
         <td align="left" colspan="4">Phí vận chuyển (Số lượng : @ViewBag.Weight kg)</td>
         <td colspan="2">@ViewBag.WeightCost.ToString("0,0") đ</td>
     </tr>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <tr>
+            <td align="left" colspan="4">Điểm thưởng:</td>
+            <td colspan="2">@ViewBag.Point</td>
+        </tr>
+    }
     <tr>
         <td align="left" colspan="4">Tổng cộng</td>
         <td colspan="2">

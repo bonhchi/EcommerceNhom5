@@ -108,6 +108,7 @@ namespace PCWeb.Controllers
             ViewBag.Weight = weight.ToString();
             ViewBag.WeightCost = weightCost;
             ViewBag.total = total + vatFee + weightCost;
+            ViewBag.Point = total / 10000;
         }
         private int IsExist(int id)
         {
@@ -157,6 +158,7 @@ namespace PCWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout(Models.Order order, string answer)
         {
+            double point = 0;
             List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
             if (ModelState.IsValid)
             {
@@ -259,7 +261,6 @@ namespace PCWeb.Controllers
                             product.ProductQuantity -= item.Quantity;
                         }
                         dataContext.SaveChanges();
-                        //Bug
                         cart.Clear();
                         TempData["check"] = query.OrderId;
                         SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
@@ -298,8 +299,15 @@ namespace PCWeb.Controllers
                         });
                         Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.Product.ProductId);
                         product.ProductQuantity -= item.Quantity;
+                        point += (item.Product.ProductPrice / 10000);
                     }
                     dataContext.SaveChanges();
+                    var user = await _userManager.FindByEmailAsync(orderTemp.Email);
+                    if(user != null)
+                    {
+                        user.UserPoint += Convert.ToInt32(point);
+                        await _userManager.UpdateAsync(user);
+                    }
                     cart.Clear();
                     TempData["check"] = query.OrderId;
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);

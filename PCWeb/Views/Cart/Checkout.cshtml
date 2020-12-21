@@ -115,6 +115,13 @@
                     <td align="left" colspan="3">Phí vận chuyển (Số lượng : @ViewBag.Weight kg)</td>
                     <td colspan="2">@ViewBag.WeightCost.ToString("0,0") đ</td>
                 </tr>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <tr>
+                        <td align="left" colspan="3">Điểm thưởng:</td>
+                        <td colspan="2">@ViewBag.Point</td>
+                    </tr>
+                }
                 <tr>
                     <td align="left" colspan="3">Tổng</td>
                     <td colspan="2">

@@ -106,7 +106,7 @@ namespace PCWeb.Controllers
         public async Task<IActionResult> Detail(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            var query = _dataContext.UserGrades.ToList();
+            //var query = _dataContext.UserGrades.ToList();
             var model = new UserInfo
             {
                 FirstName = user.FirstName,
