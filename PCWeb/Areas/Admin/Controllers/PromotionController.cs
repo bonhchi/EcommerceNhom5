@@ -20,10 +20,10 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             this.dataContext = dataContext;
         }
-
         public IActionResult Index()
         {
             var promotion = dataContext.Promotions.ToList();
+            ViewBag.Hide = TempData["Key"];
             return View(promotion);
         }
         [HttpGet]
@@ -111,7 +111,6 @@ namespace PCWeb.Areas.Admin.Controllers
                     ProductId = item.ProductId,
                     PromotionId = id
                 });
-                
             }
             dataContext.SaveChanges();
             var productDetail = dataContext.PromotionDetails.Where(p => p.PromotionId == id);

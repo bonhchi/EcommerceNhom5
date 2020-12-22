@@ -4,6 +4,7 @@
 }
 @model List<Promotion>
 <h2 class="text-md-center">Sản phẩm</h2>
+<p><a class="btn btn-primary" asp-controller="Promotion" asp-action="Add">Thêm sản phẩm</a></p>
 <br />
 <table class="table">
     <thead>
@@ -30,6 +31,7 @@
                         <a class="btn btn-outline-info" asp-area="Admin" asp-controller="Promotion" asp-action="Edit" asp-route-id="@item.PromotionId">Chỉnh sửa</a>
                         <a class="btn btn-outline-danger" asp-area="Admin" asp-controller="Promtion" asp-action="Delete" asp-route-id="@item.PromotionId">Xóa</a>
                         <a class="btn btn-outline-success" asp-area="Admin" asp-controller="Promotion" asp-action="Detail" asp-route-id="@item.PromotionId">Chi tiết</a>
+                        <a class="btn btn-outline-success" asp-area="Admin" asp-controller="Promotion" asp-action="Apply" asp-route-id="@item.PromotionId">Áp dụng sản phẩm</a>
                     </td>
                 </tr>
             }

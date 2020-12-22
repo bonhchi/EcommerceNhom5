@@ -18,6 +18,7 @@ namespace PCWeb.Models
         public string PromotionCode { get; set; }
         [DisplayName("Tỉ lệ khuyến mãi")]
         [Required(ErrorMessage = "Tỉ lệ khuyến mãi không được để trống")]
+        [Range(1,99,ErrorMessage = "Tỉ lệ khuyến mãi chỉ được từ 1 đến 99")]
         public double PromotionDiscount { get; set; }
         public List<Gift> Gifts { get; set; }
         public List<PromotionDetail> PromotionDetails { get; set; }
