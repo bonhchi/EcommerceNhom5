@@ -44,6 +44,8 @@ namespace PCWeb.Data
         public DbSet<Reply> Replies { get; set; }
         public DbSet<Fee> Fees { get; set; }
         public DbSet<UserGrade> UserGrades { get; set; }
+        public DbSet<PromotionDetail> PromotionDetails { get; set; }
+        public DbSet<Gift> Gifts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

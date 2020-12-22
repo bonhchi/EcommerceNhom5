@@ -12,12 +12,14 @@ namespace PCWeb.Models
         [DisplayName("Tên khuyến mãi")]
         [Required(ErrorMessage = "Khuyến mãi không được để trống")]
         public string PromotionName { get; set; }
-        [DisplayName("Mặt hàng áp dụng")]
-        public string PromotionApply { get; set; }
-        [RegularExpression(@"^[A-Z]+[0-9]+$", ErrorMessage = "Mã giảm giá phải có số và chữ")]
-        [MinLength(8, ErrorMessage = "Mã giám giá ít nhất 8 kí tự")]
+        //[RegularExpression(@"^[A-Z]+[0-9]+$", ErrorMessage = "Mã giảm giá phải có số và chữ")]
+        [MinLength(2, ErrorMessage = "Kích hoạt giám giá ít nhất 2 kí tự")]
         [DisplayName("Mã giảm giá")]
         public string PromotionCode { get; set; }
-        public List<PromotionDetail> PromotionDetail { get; set; }
+        [DisplayName("Tỉ lệ khuyến mãi")]
+        [Required(ErrorMessage = "Tỉ lệ khuyến mãi không được để trống")]
+        public double PromotionDiscount { get; set; }
+        public List<Gift> Gifts { get; set; }
+        public List<PromotionDetail> PromotionDetails { get; set; }
     }
 }
