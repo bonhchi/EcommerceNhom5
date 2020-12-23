@@ -211,11 +211,13 @@ namespace PCWeb.Controllers
         }
         [HttpGet]
         [Authorize]
+        [Route("Account/Order/{id}")]
         public async Task<IActionResult> Order(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             var userOrder = _dataContext.Orders.Where(p => p.Email == user.Email).ToList();
             var orderCondition = _dataContext.OrderConditions.ToList();
+            TempData["id"] = id;
             return View(userOrder);
         }
         [HttpGet]
@@ -228,11 +230,11 @@ namespace PCWeb.Controllers
             var user = await _userManager.FindByEmailAsync(orderCancel.Email);
             var userOrder = _dataContext.Orders.Where(p => p.Email == user.Email).ToList();
             var orderCondition = _dataContext.OrderConditions.ToList();
-            return View("Order", userOrder);
+            return RedirectToAction("Order","Account", new { id = user.Id });
         }
         [HttpGet]
         [Authorize]
-        public IActionResult OrderDetail(int id)
+        public async Task <IActionResult> OrderDetail(int id)
         {
             Order order = _dataContext.Orders.FirstOrDefault(p => p.OrderId == id);
             var item = _dataContext.OrderDetails.Where(p => p.OrderId == order.OrderId).ToList();
@@ -242,9 +244,29 @@ namespace PCWeb.Controllers
                 Product product = _dataContext.Products.FirstOrDefault(p => p.ProductId == item2.ProductId);
                 products.Add(product);
             }
-            ViewBag.Total = item.Sum(item => item.Product.ProductPrice * item.Quantity);
-            ViewBag.Order = item;
+            TestViewBag(item);
+            var user = await _userManager.FindByEmailAsync(order.Email);
+            ViewBag.Id = user.Id;
             return View(order);
+        }
+        private void TestViewBag(List<OrderDetail> order)
+        {
+            ViewBag.Order = order;
+            double total = order.Sum(item => item.Product.ProductPrice * item.Quantity);
+            double vat = _dataContext.Fees.FirstOrDefault(p => p.FeeId == 2).FeeAmount / 100;
+            double vatFee = vat * total;
+            double weight = 0;
+            foreach (var item in order)
+            {
+                weight += (item.Product.ProductPackage * item.Quantity);
+            }
+            double weightCost = weight * _dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
+            ViewBag.VAT = (vat * 100).ToString();
+            ViewBag.VATfee = vatFee;
+            ViewBag.Weight = weight.ToString();
+            ViewBag.WeightCost = weightCost;
+            ViewBag.total = total + vatFee + weightCost;
+            ViewBag.Point = total / 10000;
         }
     }
 }

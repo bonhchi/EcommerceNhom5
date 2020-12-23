@@ -27,12 +27,14 @@ namespace PCWeb.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        public CartController(DataContext dataContext, IConfiguration config)
+        public CartController(DataContext dataContext, IConfiguration config, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             this.dataContext = dataContext;
             this.config = config;
             clientId = config["PaypalSettings:ClientId"];
             secretKey = config["PaypalSettings:SecretKey"];
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         public IActionResult Index()
         {
@@ -261,6 +263,12 @@ namespace PCWeb.Controllers
                             product.ProductQuantity -= item.Quantity;
                         }
                         dataContext.SaveChanges();
+                        var user = await _userManager.FindByEmailAsync(order.Email);
+                        if (user != null)
+                        {
+                            user.UserPoint += Convert.ToInt32(point);
+                            await _userManager.UpdateAsync(user);
+                        }
                         cart.Clear();
                         TempData["check"] = query.OrderId;
                         SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
@@ -302,7 +310,8 @@ namespace PCWeb.Controllers
                         point += (item.Product.ProductPrice / 10000);
                     }
                     dataContext.SaveChanges();
-                    var user = await _userManager.FindByEmailAsync(orderTemp.Email);
+                    //Chỉnh sửa code
+                    var user = await _userManager.FindByEmailAsync(order.Email);
                     if(user != null)
                     {
                         user.UserPoint += Convert.ToInt32(point);

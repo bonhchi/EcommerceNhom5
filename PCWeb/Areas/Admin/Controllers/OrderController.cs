@@ -65,9 +65,27 @@ namespace PCWeb.Areas.Admin.Controllers
                 Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item2.ProductId);
                 products.Add(product);
             }
-            ViewBag.Total = item.Sum(item => item.Product.ProductPrice * item.Quantity);
-            ViewBag.Order = item;
+            TestViewBag(item);
             return View(order);
+        }
+        private void TestViewBag(List<OrderDetail> order)
+        {
+            ViewBag.order = order;
+            double total = order.Sum(item => item.Product.ProductPrice * item.Quantity);
+            double vat = dataContext.Fees.FirstOrDefault(p => p.FeeId == 2).FeeAmount / 100;
+            double vatFee = vat * total;
+            double weight = 0;
+            foreach (var item in order)
+            {
+                weight += (item.Product.ProductPackage * item.Quantity);
+            }
+            double weightCost = weight * dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
+            ViewBag.VAT = (vat * 100).ToString();
+            ViewBag.VATfee = vatFee;
+            ViewBag.Weight = weight.ToString();
+            ViewBag.WeightCost = weightCost;
+            ViewBag.total = total + vatFee + weightCost;
+            ViewBag.Point = total / 10000;
         }
         [HttpGet]
         public IActionResult Condition(int id)

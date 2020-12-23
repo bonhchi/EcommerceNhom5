@@ -70,13 +70,26 @@
                     }
                 </tbody>
                 <tr>
-                    <td align="right" colspan="5">Tổng cộng:</td>
-                    <td>@ViewBag.Total.ToString("0,0")</td>
+                    <td align="left" colspan="4">Thuế VAT (@ViewBag.VAT %)</td>
+                    <td colspan="2">@ViewBag.VATFee.ToString("0,0") đ</td>
                 </tr>
-
+                <tr>
+                    <td align="left" colspan="4">Phí vận chuyển (Số lượng : @ViewBag.Weight kg)</td>
+                    <td colspan="2">@ViewBag.WeightCost.ToString("0,0") đ</td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="4">Điểm thưởng:</td>
+                    <td colspan="2">@ViewBag.Point</td>
+                </tr>
+                <tr>
+                    <td align="left" colspan="4">Tổng cộng</td>
+                    <td colspan="2">
+                        @ViewBag.total.ToString("0,0") đ
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
 <div>
-    <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="btn btn-primary">Trở về danh sách</a>
+    <a asp-area="Admin" asp-controller="Order" asp-action="Index"  class="btn btn-primary">Trở về danh sách</a>
 </div>
