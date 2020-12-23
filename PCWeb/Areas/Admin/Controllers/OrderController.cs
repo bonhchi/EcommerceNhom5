@@ -83,7 +83,12 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             Order changeCondition = dataContext.Orders.FirstOrDefault(p => p.OrderId == id);
             changeCondition.OrderConditionId = order.OrderConditionId;
-            if(order.OrderConditionId == 5)
+            if(order.OrderConditionId == 5 && order.OrderCheckout == "Chưa thanh toán")
+            {
+                changeCondition.OrderCheckout = "Đã thanh toán";
+            }
+            dataContext.SaveChanges();
+            if(order.OrderCheckout == "Đã thanh toán")
             {
                 var orderList = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
                 List<Product> products = new List<Product>();

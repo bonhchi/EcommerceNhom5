@@ -58,17 +58,11 @@
             </td>
         </tr>
     </table>
-    
 </div>
 <div class="row justify-content-md-center">
-    
         <a class="btn btn-primary" asp-area="" asp-action="Edit" asp-controller="Account" asp-route-id="@ViewBag.Id">Thay đổi thông tin</a>
- 
         <a class="btn btn-primary " style="margin-left:30px" asp-area="" asp-action="ChangePassword" asp-controller="Account" asp-route-id="@ViewBag.Id">Thay đổi mật khẩu</a>
-    
-    
-        <a class="btn btn-primary" style="margin-left:30px">Thông tin đơn hàng</a>
-    
+        <a class="btn btn-primary" style="margin-left:30px" asp-area="" asp-action="Order" asp-controller="Account" asp-route-id="@ViewBag.Id">Thông tin đơn hàng</a>
 </div>
 
 

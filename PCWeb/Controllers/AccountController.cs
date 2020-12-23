@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PCWeb.Data;
+using PCWeb.Models;
 using PCWeb.Models.Account;
+using PCWeb.Models.Source;
 
 namespace PCWeb.Controllers
 {
@@ -106,7 +108,7 @@ namespace PCWeb.Controllers
         public async Task<IActionResult> Detail(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            //var query = _dataContext.UserGrades.ToList();
+            var query = _dataContext.UserGrades.ToList();
             var model = new UserInfo
             {
                 FirstName = user.FirstName,
@@ -206,6 +208,43 @@ namespace PCWeb.Controllers
             }
             ViewBag.Id = id;
             return View(model);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Order(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var userOrder = _dataContext.Orders.Where(p => p.Email == user.Email).ToList();
+            var orderCondition = _dataContext.OrderConditions.ToList();
+            return View(userOrder);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            Order orderCancel = _dataContext.Orders.FirstOrDefault(p => p.OrderId == id);
+            orderCancel.OrderConditionId = 6;
+            _dataContext.SaveChanges();
+            var user = await _userManager.FindByEmailAsync(orderCancel.Email);
+            var userOrder = _dataContext.Orders.Where(p => p.Email == user.Email).ToList();
+            var orderCondition = _dataContext.OrderConditions.ToList();
+            return View("Order", userOrder);
+        }
+        [HttpGet]
+        [Authorize]
+        public IActionResult OrderDetail(int id)
+        {
+            Order order = _dataContext.Orders.FirstOrDefault(p => p.OrderId == id);
+            var item = _dataContext.OrderDetails.Where(p => p.OrderId == order.OrderId).ToList();
+            List<Product> products = new List<Product>();
+            foreach (var item2 in item)
+            {
+                Product product = _dataContext.Products.FirstOrDefault(p => p.ProductId == item2.ProductId);
+                products.Add(product);
+            }
+            ViewBag.Total = item.Sum(item => item.Product.ProductPrice * item.Quantity);
+            ViewBag.Order = item;
+            return View(order);
         }
     }
 }
