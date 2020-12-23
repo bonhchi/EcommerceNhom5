@@ -23,7 +23,6 @@ namespace PCWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var promotion = dataContext.Promotions.ToList();
-            ViewBag.Hide = TempData["Key"];
             return View(promotion);
         }
         [HttpGet]
@@ -103,23 +102,74 @@ namespace PCWeb.Areas.Admin.Controllers
         public IActionResult Apply(int id, Promotion promotion)
         {
             Promotion changePromotion = dataContext.Promotions.FirstOrDefault(p => p.PromotionId == id);
-            var productApply = dataContext.Products.Where(p => p.ProductCode.Contains(promotion.PromotionCode)).ToList();
-            foreach(var item in productApply)
+            var productApply = dataContext.Products.Where(p => p.ProductCode.Contains(changePromotion.PromotionCode)).ToList();
+            foreach (var item in productApply)
             {
                 dataContext.PromotionDetails.Add(new PromotionDetail()
                 {
                     ProductId = item.ProductId,
                     PromotionId = id
                 });
+                item.ProductPriceReality -= item.ProductPriceReality * (changePromotion.PromotionDiscount / 100);
+                dataContext.SaveChanges();
             }
-            dataContext.SaveChanges();
-            var productDetail = dataContext.PromotionDetails.Where(p => p.PromotionId == id);
-            foreach(var itemDetail in productDetail)
+            return RedirectToAction("Index", "Promotion");
+        }
+        public IActionResult Detail()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Gift(int id)
+        {
+            Promotion promotionGift = dataContext.Promotions.FirstOrDefault(p => p.PromotionId == id);
+            var giftList = dataContext.Gifts.ToList();
+            ViewBag.Gift = giftList; //check lỗi
+            ViewBag.ID = id;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Gift(int id, Gift gift)
+        {
+            var giftList = dataContext.Gifts.ToList();
+            if (ModelState.IsValid)
             {
-                Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == itemDetail.ProductId);
-                product.ProductPriceReality -= (product.ProductPriceReality * (itemDetail.Promotion.PromotionDiscount / 100));
+                Gift newGift = new Gift
+                {
+                    GiftName = gift.GiftName,
+                    PromotionId = id
+                };
+                dataContext.Gifts.Add(newGift);
+                dataContext.SaveChanges();
+                ViewBag.Gift = giftList;
+                ViewBag.ID = id; //check bug
+                return View("Gift", newGift);
             }
-            dataContext.SaveChanges();
+            ViewBag.Gift = giftList;
+            ViewBag.ID = id;
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Cancel(int id)
+        {
+            Promotion promotion = dataContext.Promotions.FirstOrDefault(p => p.PromotionId == id);
+            return View(promotion);
+        }
+        [HttpPost]
+        public IActionResult Cancel(int id, Promotion promotion) //Điều chỉnh code
+        {
+            var promotionCancel = dataContext.PromotionDetails.Where(p => p.PromotionId == id).ToList();
+            foreach(var itemProduct in promotionCancel) //kiểm tra clean code
+            {
+                Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == itemProduct.ProductId);
+                product.ProductPriceReality = product.ProductPrice;
+                dataContext.SaveChanges();
+            }
+            foreach(var item in promotionCancel)
+            {
+                dataContext.PromotionDetails.Remove(item);
+                dataContext.SaveChanges();
+            }
             return RedirectToAction("Index", "Promotion");
         }
     }

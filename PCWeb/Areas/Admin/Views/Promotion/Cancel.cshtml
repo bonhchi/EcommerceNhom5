@@ -1,0 +1,10 @@
+﻿@model PCWeb.Models.Promotion
+@{
+    ViewData["Title"] = "Cancel";
+}
+<form asp-action="Cancel">
+    <input type="hidden" asp-for="PromotionId" />
+    <input type="submit" value="Xóa" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-info">Quay về danh sách</a>
+</form>
+
