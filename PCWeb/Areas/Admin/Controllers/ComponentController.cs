@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,7 +14,6 @@ namespace PCWeb.Areas.Admin.Controllers
     public class ComponentController : Controller
     {
         private readonly DataContext dataContext;
-
         public ComponentController(DataContext dataContext)
         {
             this.dataContext = dataContext;

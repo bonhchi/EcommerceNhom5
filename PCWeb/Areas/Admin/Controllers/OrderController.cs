@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PCWeb.Data;
 using PCWeb.Models;
+using PCWeb.Models.Account;
 using PCWeb.Models.Source;
 
 namespace PCWeb.Areas.Admin.Controllers
@@ -16,9 +18,11 @@ namespace PCWeb.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly DataContext dataContext;
-        public OrderController(DataContext dataContext)
+        private readonly UserManager<User> _userManager;
+        public OrderController(DataContext dataContext, UserManager<User> userManager)
         {
             this.dataContext = dataContext;
+            _userManager = userManager;
         }
         [HttpGet]
         public IActionResult Index(string search)
@@ -77,7 +81,7 @@ namespace PCWeb.Areas.Admin.Controllers
             double weight = 0;
             foreach (var item in order)
             {
-                weight += (item.Product.ProductPackage * item.Quantity);
+                weight += Math.Round(item.Product.ProductPackage * item.Quantity, 1);
             }
             double weightCost = weight * dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
             ViewBag.VAT = (vat * 100).ToString();
@@ -125,6 +129,27 @@ namespace PCWeb.Areas.Admin.Controllers
                 }
             };
             dataContext.SaveChanges();
+            return RedirectToAction("Index", "Order");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Payment(int id)
+        {
+            Order orderPayment = dataContext.Orders.FirstOrDefault(p => p.OrderId == id);
+            orderPayment.OrderCheckout = "Đã thanh toán";
+            dataContext.SaveChanges();
+            var user = await _userManager.FindByEmailAsync(orderPayment.Email);
+            if (user != null)
+            {
+                double point = 0;
+                var orderDetail = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
+                var product = dataContext.Products.ToList();
+                foreach(var item in orderDetail)
+                {
+                    point += (item.Product.ProductPrice / 10000);
+                }
+                user.UserPoint += Convert.ToInt32(point);
+                await _userManager.UpdateAsync(user);
+            }
             return RedirectToAction("Index", "Order");
         }
     }

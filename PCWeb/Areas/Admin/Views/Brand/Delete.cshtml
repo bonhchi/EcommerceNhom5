@@ -1,13 +1,13 @@
 ﻿@model PCWeb.Models.Source.Brand
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Xóa thương hiệu";
 }
-<h3>Bạn có chắc chắn xóa sản phẩm này không?</h3>
+<h3>Bạn có chắc chắn xóa thương hiệu này không?</h3>
 <br />
 <div>
     <form asp-action="Delete">
         <input type="hidden" asp-for="BrandId" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
+        <input type="submit" value="Xóa" class="btn btn-danger" />
         <a asp-action="Index" class="btn btn-info">Back to List</a>
     </form>
 </div>

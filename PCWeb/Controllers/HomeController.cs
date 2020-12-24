@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PCWeb.Data;
-using PCWeb.Helper;
 using PCWeb.Models;
-using PCWeb.Models.Root;
-using PCWeb.Models.Source;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -13,7 +9,6 @@ namespace PCWeb.Controllers
     public class HomeController : Controller
     {
         private readonly DataContext dataContext;
-        
         public HomeController(DataContext dataContext)
         {
             this.dataContext = dataContext;

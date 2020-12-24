@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PCWeb.Data;
 using PCWeb.Models.Name;
 using PCWeb.Models.Root;
-using PCWeb.Models.Source;
 
 namespace PCWeb.Areas.Admin.Controllers
 {
@@ -17,7 +14,6 @@ namespace PCWeb.Areas.Admin.Controllers
     public class CPUController : Controller
     {
         private readonly DataContext dataContext;
-
         public CPUController(DataContext dataContext)
         {
             this.dataContext = dataContext;

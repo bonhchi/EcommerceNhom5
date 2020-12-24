@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PCWeb.Data;
 using PCWeb.Models;
 using PCWeb.Models.Source;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PCWeb.Areas.Admin.Controllers
 {
@@ -124,7 +121,7 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             Promotion promotionGift = dataContext.Promotions.FirstOrDefault(p => p.PromotionId == id);
             var giftList = dataContext.Gifts.ToList();
-            ViewBag.Gift = giftList; //check lỗi
+            ViewBag.Gift = giftList;
             ViewBag.ID = id;
             return View();
         }
@@ -156,10 +153,10 @@ namespace PCWeb.Areas.Admin.Controllers
             return View(promotion);
         }
         [HttpPost]
-        public IActionResult Cancel(int id, Promotion promotion) //Điều chỉnh code
+        public IActionResult Cancel(int id, Promotion promotion)
         {
             var promotionCancel = dataContext.PromotionDetails.Where(p => p.PromotionId == id).ToList();
-            foreach(var itemProduct in promotionCancel) //kiểm tra clean code
+            foreach(var itemProduct in promotionCancel)
             {
                 Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == itemProduct.ProductId);
                 product.ProductPriceReality = product.ProductPrice;

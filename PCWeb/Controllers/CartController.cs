@@ -26,7 +26,6 @@ namespace PCWeb.Controllers
         private const string currency = "USD";
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
         public CartController(DataContext dataContext, IConfiguration config, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             this.dataContext = dataContext;
@@ -47,7 +46,6 @@ namespace PCWeb.Controllers
             }
             return View();
         }
-        //[Route("quantity/{id}")]
         public IActionResult Quantity(int id, int quantity)
         {
             List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
@@ -83,8 +81,6 @@ namespace PCWeb.Controllers
             }
             return RedirectToAction("Index");
         }
-        //[Route("remove/{id}")]
-        //[HttpPost]
         public IActionResult Remove(int id)
         {
             List<OrderDetail> cart = SessionHelper.GetObjectFromJson<List<OrderDetail>>(HttpContext.Session, "cart");
@@ -102,7 +98,7 @@ namespace PCWeb.Controllers
             double weight = 0;
             foreach (var item in cart)
             {
-                weight += (item.Product.ProductPackage * item.Quantity);
+                weight += Math.Round(item.Product.ProductPackage * item.Quantity , 1);
             }
             double weightCost = weight * dataContext.Fees.FirstOrDefault(p => p.FeeId == 1).FeeAmount;
             ViewBag.VAT = (vat * 100).ToString();
@@ -211,7 +207,6 @@ namespace PCWeb.Controllers
                         InvoiceNumber = paypalOrderId.ToString()
                     }
                 },
-                        //direct đến trang nào đó trả lệnh
                         RedirectUrls = new RedirectUrls()
                         {
                             CancelUrl = $"{hostname}/Cart/Fail",
@@ -244,6 +239,7 @@ namespace PCWeb.Controllers
                             Address = order.Address,
                             Email = order.Email,
                             CusName = order.CusName,
+                            Note = order.Note,
                             OrderConditionId = 1,
                             PaymentMethodId = 2,
                             OrderCheckout = "Đã thanh toán"
@@ -291,6 +287,7 @@ namespace PCWeb.Controllers
                         Email = order.Email,
                         CusName = order.CusName,
                         PaymentMethodId = 1,
+                        Note = order.Note,
                         OrderConditionId = 1,
                         OrderCheckout = "Chưa thanh toán"
                     };
@@ -310,13 +307,6 @@ namespace PCWeb.Controllers
                         point += (item.Product.ProductPrice / 10000);
                     }
                     dataContext.SaveChanges();
-                    //Chỉnh sửa code
-                    var user = await _userManager.FindByEmailAsync(order.Email);
-                    if(user != null)
-                    {
-                        user.UserPoint += Convert.ToInt32(point);
-                        await _userManager.UpdateAsync(user);
-                    }
                     cart.Clear();
                     TempData["check"] = query.OrderId;
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);

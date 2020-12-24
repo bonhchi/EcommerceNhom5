@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,7 +19,6 @@ namespace PCWeb.Areas.Admin.Controllers
         {
             this.dataContext = dataContext;
         }
-
         public IActionResult Index()
         {
             var item = dataContext.CPUs.ToList();

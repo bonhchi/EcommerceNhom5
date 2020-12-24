@@ -5,8 +5,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.WebEncoders.Testing;
-using PCWeb.Data;
 using PCWeb.Models.Account;
 
 namespace PCWeb.Areas.Admin.Controllers
@@ -22,7 +20,6 @@ namespace PCWeb.Areas.Admin.Controllers
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
-            
         }
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Staff()
@@ -244,7 +241,5 @@ namespace PCWeb.Areas.Admin.Controllers
             else
                 return RedirectToAction(nameof(HomeController.Index), "Home");
         }
-
-
     }
 }

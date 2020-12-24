@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,12 +14,10 @@ namespace PCWeb.Areas.Admin.Controllers
     public class CaseController : Controller
     {
         private readonly DataContext dataContext;
-
         public CaseController(DataContext dataContext)
         {
             this.dataContext = dataContext;
         }
-
         public IActionResult Index()
         {
             var item = dataContext.Cases.ToList();

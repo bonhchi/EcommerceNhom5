@@ -1,6 +1,6 @@
 ﻿@using PCWeb.Models.Root
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Phí";
 }
 @model List<Fee>
 <h3>Số lượng phí: @Model.Count</h3>
@@ -23,7 +23,7 @@
             {
                 <tr>
                     <td>@(i++)</td>
-                    <td>@item.FeeName.</td>
+                    <td>@item.FeeName</td>
                     <td>@item.FeeAmount</td>
                     <td>@item.FeeUnit</td>
                     <td>

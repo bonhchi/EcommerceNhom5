@@ -4,7 +4,6 @@ using PCWeb.Models.Name;
 using PCWeb.Models.Root;
 using PCWeb.Models.Source;
 using System.Linq;
-
 namespace PCWeb.Controllers
 {
     public class DetailController : Controller
