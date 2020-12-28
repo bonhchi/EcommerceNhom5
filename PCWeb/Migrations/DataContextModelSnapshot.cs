@@ -48,22 +48,22 @@ namespace PCWeb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5502be66-a9e2-4a93-adea-2667e0e80919",
-                            ConcurrencyStamp = "a428a566-d1ef-4868-ab62-809dc73e835b",
+                            Id = "62e25443-0237-45f2-b40e-50dacf8ea45f",
+                            ConcurrencyStamp = "f45aaf17-43bd-480d-a98a-8eff8bb89146",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "221eaac1-863c-4b28-ae35-1fd34d72be9d",
-                            ConcurrencyStamp = "a182775f-a2cf-4b82-8e7e-468aeaa99419",
+                            Id = "6b4f7f39-0c26-4a9e-8a3f-2cc79b1c94f9",
+                            ConcurrencyStamp = "57b09a85-e3ab-421f-be35-c961b5db3af6",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "5c73a77d-23b6-416e-84e5-a0e870d8e111",
-                            ConcurrencyStamp = "ed397193-d30f-47a2-a5bd-24bd35a26ce5",
+                            Id = "59613fa4-cadd-4a5f-8d2f-8264ec4a8c3e",
+                            ConcurrencyStamp = "f114af1b-128e-438f-81f6-d80c36117054",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         });
@@ -445,6 +445,7 @@ namespace PCWeb.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("GiftName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PromotionId")

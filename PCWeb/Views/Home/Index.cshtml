@@ -20,7 +20,7 @@
             }
             @foreach (var item in ViewBag.PCCategory)
             {
-                <a class="list-group-item list-group-item-action" asp-controller="Category" asp-action="PC" asp-route-id="@item.PCCategoryId">@item.PCCategoryName</a>
+                <a class="list-group-item list-group-item-action" asp-action="Category" asp-controller="PC" asp-route-id="@item.PCCategoryId">@item.PCCategoryName</a>
             }
         </div>
     </div>
@@ -92,16 +92,16 @@
                             @for (int j = 0; j < Model.Count; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@Model[j].ProductImage" alt="@Model[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @Model[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @Model[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -117,16 +117,16 @@
                             @for (int j = 0; j < 4; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@Model[j].ProductImage" alt="@Model[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @Model[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @Model[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -142,16 +142,16 @@
                             @for (int j = i - 3; j <= i; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@Model[j].ProductImage" alt="@Model[i].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @Model[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @Model[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -168,16 +168,16 @@
                             @for (int j = i; j <= Model.Count - 1; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@Model[j].ProductImage" alt="@Model[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @Model[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @Model[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -191,10 +191,10 @@
                 }
             </div>
             <br />
-            <a class="carousel-control-prev" href="#myCarousel1" role="button" data-slide="prev" style="padding-right:150px;height:40%">
+            <a class="carousel-control-prev carousel-test-right" href="#myCarousel1" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color:black; color:blue"></span>
             </a>
-            <a class="carousel-control-next" href="#myCarousel1" role="button" data-slide="next" style="padding-left:150px;height:40%">
+            <a class="carousel-control-next carousel-test-left" href="#myCarousel1" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:black; color:blue"></span>
             </a>
         </div>
@@ -230,16 +230,16 @@
                             @for (int j = 0; j < ViewBag.Laptop.Count; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.Laptop[j].ProductId" asp-route-name="@ViewBag.Laptop[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.Laptop[j].ProductImage" alt="@ViewBag.Laptop[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.Laptop[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.Laptop[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -255,16 +255,16 @@
                             @for (int j = 0; j < 4; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.Laptop[j].ProductId" asp-route-name="@ViewBag.Laptop[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.Laptop[j].ProductImage" alt="@ViewBag.Laptop[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.Laptop[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.Laptop[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -280,16 +280,16 @@
                             @for (int j = i - 3; j <= i; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.Laptop[j].ProductId" asp-route-name="@ViewBag.Laptop[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.Laptop[j].ProductImage" alt="@ViewBag.Laptop[i].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.Laptop[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.Laptop[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -306,16 +306,16 @@
                             @for (int j = i; j <= ViewBag.Laptop.Count - 1; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.Laptop[j].ProductId" asp-route-name="@ViewBag.Laptop[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.Laptop[j].ProductImage" alt="@ViewBag.Laptop[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.Laptop[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.Laptop[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -368,17 +368,17 @@
                             @for (int j = 0; j < ViewBag.PC.Count; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.PC[j].ProductId" asp-route-name="@ViewBag.PC[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.PC[j].ProductImage" alt="@ViewBag.PC[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.PC[j].ProductName
-                                            </h5>
-                                            <p class="card-text">
+                                            </h4>
+                                            <p class="card-text text-test">
                                                 @ViewBag.PC[j].ProductPrice.ToString("0,0") đ
                                             </p>
                                         </div>
@@ -393,16 +393,16 @@
                             @for (int j = 0; j < 4; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.PC[j].ProductId" asp-route-name="@ViewBag.PC[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.PC[j].ProductImage" alt="@ViewBag.PC[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.PC[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.PC[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -418,16 +418,16 @@
                             @for (int j = i - 3; j <= i; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.PC[j].ProductId" asp-route-name="@ViewBag.PC[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.PC[j].ProductImage" alt="@ViewBag.PC[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.PC[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.PC[j].ProductPrice.ToString("0,0") đ
                                             </p>
@@ -444,16 +444,16 @@
                             @for (int j = i; j <= ViewBag.PC.Count - 1; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
-                                    <div class="card mb-3">
+                                    <div class="card mb-3 card-info">
                                         <a asp-controller="Detail"
                                            asp-action="Index" asp-route-id="@ViewBag.PC[j].ProductId" asp-route-name="@ViewBag.PC[j].ProductName">
-                                            <img class="card-img-top"
+                                            <img class="card-img-top card-img"
                                                  src="~/images/@ViewBag.PC[j].ProductImage" alt="@ViewBag.PC[j].ProductName">
                                         </a>
                                         <div class="card-body">
-                                            <h5 class="card-title">
+                                            <h4 class="card-title">
                                                 @ViewBag.PC[j].ProductName
-                                            </h5>
+                                            </h4>
                                             <p class="card-text">
                                                 @ViewBag.PC[j].ProductPrice.ToString("0,0") đ
                                             </p>

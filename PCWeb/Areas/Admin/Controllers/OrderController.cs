@@ -89,7 +89,7 @@ namespace PCWeb.Areas.Admin.Controllers
             ViewBag.Weight = weight.ToString();
             ViewBag.WeightCost = weightCost;
             ViewBag.total = total + vatFee + weightCost;
-            ViewBag.Point = total / 10000;
+            ViewBag.Point = Math.Round(total / 10000, 0);
         }
         [HttpGet]
         public IActionResult Condition(int id)

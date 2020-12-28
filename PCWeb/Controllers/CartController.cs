@@ -106,7 +106,7 @@ namespace PCWeb.Controllers
             ViewBag.Weight = weight.ToString();
             ViewBag.WeightCost = weightCost;
             ViewBag.total = total + vatFee + weightCost;
-            ViewBag.Point = total / 10000;
+            ViewBag.Point = Math.Round(total / 10000, 0);
         }
         private int IsExist(int id)
         {

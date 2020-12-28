@@ -84,7 +84,8 @@ namespace PCWeb.Migrations
                     FeeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FeeName = table.Column<string>(nullable: false),
-                    FeeAmount = table.Column<double>(nullable: false)
+                    FeeAmount = table.Column<double>(nullable: false),
+                    FeeUnit = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,9 +151,8 @@ namespace PCWeb.Migrations
                     PromotionId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PromotionName = table.Column<string>(nullable: false),
-                    PromotionApply = table.Column<string>(nullable: true),
                     PromotionCode = table.Column<string>(nullable: true),
-                    PromotionCodeNeed = table.Column<bool>(nullable: false)
+                    PromotionDiscount = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,6 +227,7 @@ namespace PCWeb.Migrations
                     ProductName = table.Column<string>(nullable: false),
                     ProductImage = table.Column<string>(nullable: true),
                     ProductPrice = table.Column<double>(nullable: false),
+                    ProductPriceReality = table.Column<double>(nullable: false),
                     ProductDescription = table.Column<string>(nullable: true),
                     DayCreate = table.Column<DateTime>(nullable: false),
                     ProductWarranty = table.Column<int>(nullable: false),
@@ -282,6 +283,26 @@ namespace PCWeb.Migrations
                         column: x => x.PaymentMethodId,
                         principalTable: "PaymentMethods",
                         principalColumn: "PaymentMethodId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Gifts",
+                columns: table => new
+                {
+                    GiftId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GiftName = table.Column<string>(nullable: false),
+                    PromotionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gifts", x => x.GiftId);
+                    table.ForeignKey(
+                        name: "FK_Gifts_Promotions_PromotionId",
+                        column: x => x.PromotionId,
+                        principalTable: "Promotions",
+                        principalColumn: "PromotionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -465,6 +486,32 @@ namespace PCWeb.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromotionDetails",
+                columns: table => new
+                {
+                    PromotionDetailId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(nullable: false),
+                    PromotionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromotionDetails", x => x.PromotionDetailId);
+                    table.ForeignKey(
+                        name: "FK_PromotionDetails_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PromotionDetails_Promotions_PromotionId",
+                        column: x => x.PromotionId,
+                        principalTable: "Promotions",
+                        principalColumn: "PromotionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -833,9 +880,9 @@ namespace PCWeb.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "bb09010a-b1e0-4c72-b9f7-cd9448814002", "556723c9-c894-4421-9f07-37bd5a03297e", "Customer", "CUSTOMER" },
-                    { "74979050-d53b-43ad-bd22-3f40f946477d", "9d701b29-de55-42ce-9313-9b61301e2778", "Administrator", "ADMINISTRATOR" },
-                    { "a01f2494-8694-4fc5-9709-819022c8d396", "929d75f7-6eb7-4983-9ba4-ab894a12cee3", "Staff", "STAFF" }
+                    { "62e25443-0237-45f2-b40e-50dacf8ea45f", "f45aaf17-43bd-480d-a98a-8eff8bb89146", "Customer", "CUSTOMER" },
+                    { "6b4f7f39-0c26-4a9e-8a3f-2cc79b1c94f9", "57b09a85-e3ab-421f-be35-c961b5db3af6", "Administrator", "ADMINISTRATOR" },
+                    { "59613fa4-cadd-4a5f-8d2f-8264ec4a8c3e", "f114af1b-128e-438f-81f6-d80c36117054", "Staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -1001,6 +1048,11 @@ namespace PCWeb.Migrations
                 column: "PCComponentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Gifts_PromotionId",
+                table: "Gifts",
+                column: "PromotionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Graphics_PCComponentId",
                 table: "Graphics",
                 column: "PCComponentId");
@@ -1081,6 +1133,16 @@ namespace PCWeb.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PromotionDetails_ProductId",
+                table: "PromotionDetails",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PromotionDetails_PromotionId",
+                table: "PromotionDetails",
+                column: "PromotionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Replies_CommentId",
                 table: "Replies",
                 column: "CommentId");
@@ -1127,6 +1189,9 @@ namespace PCWeb.Migrations
                 name: "Fees");
 
             migrationBuilder.DropTable(
+                name: "Gifts");
+
+            migrationBuilder.DropTable(
                 name: "Graphics");
 
             migrationBuilder.DropTable(
@@ -1148,7 +1213,7 @@ namespace PCWeb.Migrations
                 name: "Powers");
 
             migrationBuilder.DropTable(
-                name: "Promotions");
+                name: "PromotionDetails");
 
             migrationBuilder.DropTable(
                 name: "Replies");
@@ -1173,6 +1238,9 @@ namespace PCWeb.Migrations
 
             migrationBuilder.DropTable(
                 name: "PCComponents");
+
+            migrationBuilder.DropTable(
+                name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "Comments");

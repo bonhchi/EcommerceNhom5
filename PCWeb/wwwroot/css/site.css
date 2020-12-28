@@ -132,7 +132,19 @@ body {
 .card-info{
     height: 420px;
 }
-
+.card-img{
+    height : 260px;
+}
+.carousel-test-right {
+    padding-right: 150px;
+    padding-top : 150px;
+    height: 30%;
+}
+.carousel-test-left {
+    padding-left: 150px;
+    padding-top: 150px;
+    height: 30%;
+}
 
 /*Link*/
 .anchor {
