@@ -10,6 +10,8 @@ namespace PCWeb.Models.Source
         [DisplayName("Mã số")]
         public int ProductId { get; set; }
         [DisplayName("Mã sản phẩm")]
+        [MinLength(14, ErrorMessage = "Mã SP có ít nhất 14 ký tự")]
+        [MaxLength(20, ErrorMessage = "Mã SP không được quá 20 ký tự")]
         public string ProductCode { get; set; }
         [DisplayName("Mã vạch")]
         [Required(ErrorMessage = "Thiếu mã vạch")]
