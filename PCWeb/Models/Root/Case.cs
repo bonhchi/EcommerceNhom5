@@ -12,7 +12,6 @@ namespace PCWeb.Models.Root
     public class Case
     {
         public int CaseId { get; set; }
-        
         [DisplayName("Loại Case")]
         [Required(ErrorMessage = "Loại Case không được để trống")]
         public string CaseSpec { get; set; }

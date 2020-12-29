@@ -13,7 +13,6 @@ namespace PCWeb.Models.Root
     public class Mainboard
     {
         public int MainboardId { get; set; }
-        
         [DisplayName("Mã Mainboard")]
         [Required(ErrorMessage = "Dung lượng không được để trống")]
         public string MainboardModel { get; set; }
@@ -65,7 +64,6 @@ namespace PCWeb.Models.Root
         [DisplayName("Đèn LED")]
         [Required(ErrorMessage = "Đèn LED không được để trống")]
         public string MainboardLED { get; set; }
-
         public int PCComponentId { get; set; }
         public PCComponent PCComponent { get; set; }
     }

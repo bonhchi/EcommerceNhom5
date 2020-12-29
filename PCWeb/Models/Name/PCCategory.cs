@@ -9,7 +9,6 @@ namespace PCWeb.Models.Name
 {
     public class PCCategory
     {
-
         public int PCCategoryId { get; set; }
         [DisplayName("Loại PC")]
         public string PCCategoryName { get; set; }
