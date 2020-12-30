@@ -201,6 +201,12 @@ namespace PCWeb.Areas.Admin.Controllers
             DeleteOrder(orderDetails);
             revenue.DateExpired = DateTime.Now;
             dataContext.SaveChanges();
+            //string deleteImage = Path.Combine(Path.Combine(webHostEnvironment.WebRootPath, "images"), product.ProductImage);
+            ////trùng hình là xóa hết
+            //if (System.IO.File.Exists(deleteImage))
+            //{
+            //    System.IO.File.Delete(deleteImage);
+            //}
             dataContext.Products.Remove(product);
             dataContext.SaveChanges();
             return RedirectToAction("Index", "Product");
