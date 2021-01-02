@@ -265,6 +265,14 @@ namespace PCWeb.Controllers
                             user.UserPoint += Convert.ToInt32(point);
                             await _userManager.UpdateAsync(user);
                         }
+                        foreach(var item in cart)
+                        {
+                            Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId);
+                            RevenueDetail revenueDetail = dataContext.RevenueDetails.FirstOrDefault(p => p.RevenueId == revenue.RevenueId);
+                            revenueDetail.Quantity += item.Quantity;
+                            revenueDetail.PriceReality = item.Product.ProductPriceReality;
+                        }
+                        dataContext.SaveChanges();
                         cart.Clear();
                         TempData["check"] = query.OrderId;
                         SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);

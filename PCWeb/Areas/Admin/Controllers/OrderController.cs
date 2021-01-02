@@ -150,6 +150,15 @@ namespace PCWeb.Areas.Admin.Controllers
                 user.UserPoint += Convert.ToInt32(point);
                 await _userManager.UpdateAsync(user);
             }
+            List<OrderDetail> orderDetails = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
+            foreach (var item in orderDetails)
+            {
+                Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId);
+                RevenueDetail revenueDetail = dataContext.RevenueDetails.FirstOrDefault(p => p.RevenueId == revenue.RevenueId);
+                revenueDetail.Quantity += item.Quantity;
+                revenueDetail.PriceReality = item.Product.ProductPriceReality;
+            }
+            dataContext.SaveChanges();
             return RedirectToAction("Index", "Order");
         }
     }

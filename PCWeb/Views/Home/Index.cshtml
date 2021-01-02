@@ -3,9 +3,6 @@
     ViewData["Title"] = "Trang chủ";
     int count = 3;
     int countLaptop = 3;
-    int test = 0;
-    int testLaptop = 0;
-    int testPC = 0;
     int countPC = 3;
 }
 
@@ -68,28 +65,25 @@
     <div class="col-lg-12">
         <div id="myCarousel1" class="carousel slide carousel-multi-item" data-ride="carousel">
             <ol class="carousel-indicators">
-                @for (int i = 0; i < Model.Count; i++)
+                @for (int i = 0; i <= Model.Count - 1; i++)
                 {
                     if (i == 0)
                     {
-                        <li data-target="#multi-item-example" data-slide-to="@test" class="active"></li>
-                        test++;
+                        <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
                     }
                     else if ((i + 1) % 4 == 1 && i > 3)
                     {
-                        <li data-target="#multi-item-example" data-slide-to="@test"></li>
-                        test++;
+                        <li data-target="#multi-item-example" data-slide-to="@(i / 4)"></li>
                     }
                 }
             </ol>
             <div class="carousel-inner" role="listbox">
                 @for (int i = 0; i < Model.Count; i++)
                 {
-                    
                     if (Model.Count < 4)
                     {
                         <div class="carousel-item active">
-                            @for (int j = 0; j < Model.Count; j++)
+                            @for (int j = 0; j < 4; j++)
                             {
                                 <div class="col-lg-3 col-md-6 mb-4" style="float:left">
                                     <div class="card mb-3 card-info">
@@ -135,6 +129,32 @@
                                 </div>
                             }
                         </div>
+                    }
+                    else if (i > 3 && Model.Count <= 7)
+                    {
+                        <div class="carousel-item">
+                            @for (int j = i; j <= Model.Count - 1; j++)
+                            {
+                                <div class="col-lg-3 col-md-6 mb-4" style="float:left">
+                                    <div class="card mb-3 card-info">
+                                        <a asp-controller="Detail"
+                                           asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
+                                            <img class="card-img-top card-img"
+                                                 src="~/images/@Model[j].ProductImage" alt="@Model[j].ProductName">
+                                        </a>
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                @Model[j].ProductName
+                                            </h4>
+                                            <p class="card-text">
+                                                @Model[j].ProductPrice.ToString("0,0") đ
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        break;
                     }
                     else if (i > 3 && (i + 1) % 4 == 0)
                     {
@@ -191,10 +211,10 @@
                 }
             </div>
             <br />
-            <a class="carousel-control-prev carousel-test-right" href="#myCarousel1" role="button" data-slide="prev">
+            <a class="carousel-control-prev carousel-test-right" href="#myCarousel1" role="button" data-slide="prev" >
                 <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color:black; color:blue"></span>
             </a>
-            <a class="carousel-control-next carousel-test-left" href="#myCarousel1" role="button" data-slide="next">
+            <a class="carousel-control-next carousel-test-left" href="#myCarousel1" role="button" data-slide="next" >
                 <span class="carousel-control-next-icon" aria-hidden="true" style="background-color:black; color:blue"></span>
             </a>
         </div>
@@ -212,12 +232,10 @@
                     if (i == 0)
                     {
                         <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
-                        testLaptop++;
                     }
                     else if ((i + 1) % 4 == 1 && i > 3)
                     {
-                        <li data-target="#multi-item-example" data-slide-to="@testLaptop"></li>
-                        testLaptop++;
+                        <li data-target="#multi-item-example" data-slide-to="@(i / 4)"></li>
                     }
                 }
             </ol>
@@ -274,6 +292,32 @@
                             }
                         </div>
                     }
+                    else if (i > 3 && ViewBag.Laptop.Count <= 7)
+                    {
+                        <div class="carousel-item">
+                            @for (int j = i; j <= ViewBag.Laptop.Count - 1; j++)
+                            {
+                                <div class="col-lg-3 col-md-6 mb-4" style="float:left">
+                                    <div class="card mb-3 card-info">
+                                        <a asp-controller="Detail"
+                                           asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
+                                            <img class="card-img-top card-img"
+                                                 src="~/images/@Model[j].ProductImage" alt="@Model[j].ProductName">
+                                        </a>
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                @Model[j].ProductName
+                                            </h4>
+                                            <p class="card-text">
+                                                @Model[j].ProductPrice.ToString("0,0") đ
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        break;
+                    }
                     else if (i > 3 && (i + 1) % 4 == 0)
                     {
                         <div class="carousel-item">
@@ -300,6 +344,7 @@
                         </div>
                         countLaptop = countLaptop + 4;
                     }
+
                     else if (ViewBag.Laptop.Count - 1 - countLaptop < 4 && ViewBag.Laptop.Count > 8)
                     {
                         <div class="carousel-item">
@@ -350,12 +395,10 @@
                     if (i == 0)
                     {
                         <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
-                        testPC++;
                     }
                     else if ((i + 1) % 4 == 1 && i > 3)
                     {
-                        <li data-target="#multi-item-example" data-slide-to="@testPC"></li>
-                        testPC++;
+                        <li data-target="#multi-item-example" data-slide-to="@(i / 4)"></li>
                     }
                 }
             </ol>
@@ -437,6 +480,32 @@
                             }
                         </div>
                         countPC = countPC + 4;
+                    }
+                    else if (i > 3 && ViewBag.PC.Count <= 7)
+                    {
+                        <div class="carousel-item">
+                            @for (int j = i; j <= ViewBag.PC.Count - 1; j++)
+                            {
+                                <div class="col-lg-3 col-md-6 mb-4" style="float:left">
+                                    <div class="card mb-3 card-info">
+                                        <a asp-controller="Detail"
+                                           asp-action="Index" asp-route-id="@Model[j].ProductId" asp-route-name="@Model[j].ProductName">
+                                            <img class="card-img-top card-img"
+                                                 src="~/images/@Model[j].ProductImage" alt="@Model[j].ProductName">
+                                        </a>
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                @Model[j].ProductName
+                                            </h4>
+                                            <p class="card-text">
+                                                @Model[j].ProductPrice.ToString("0,0") đ
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        break;
                     }
                     else if (ViewBag.PC.Count - 1 - countPC < 4 && ViewBag.PC.Count > 8)
                     {
