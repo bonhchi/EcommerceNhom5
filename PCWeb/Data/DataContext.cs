@@ -271,6 +271,21 @@ namespace PCWeb.Data
                     UserGradeDiscount = 3,
                     UserGradeName = "Khách hàng kim cương"
                 });
+            builder.Entity<Fee>().HasData(
+                new Fee
+                {
+                    FeeId = 1,
+                    FeeName = "Phí vận chuyển",
+                    FeeAmount = 3200,
+                    FeeUnit = "vnd/kg"
+                },
+                new Fee {
+                    FeeId = 2,
+                    FeeName = "Thuế VAT",
+                    FeeAmount = 10,
+                    FeeUnit = "%"
+                }
+            );
         }
     }
 }

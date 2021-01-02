@@ -10,7 +10,7 @@ using PCWeb.Data;
 namespace PCWeb.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201228125812_Test")]
+    [Migration("20210102080549_Test")]
     partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,22 +50,22 @@ namespace PCWeb.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "62e25443-0237-45f2-b40e-50dacf8ea45f",
-                            ConcurrencyStamp = "f45aaf17-43bd-480d-a98a-8eff8bb89146",
+                            Id = "e64b760a-775f-42e4-9cef-f6e1210dbeb6",
+                            ConcurrencyStamp = "ed016e4a-95be-4291-b25f-10a8f5a6a9c7",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "6b4f7f39-0c26-4a9e-8a3f-2cc79b1c94f9",
-                            ConcurrencyStamp = "57b09a85-e3ab-421f-be35-c961b5db3af6",
+                            Id = "34cee117-46b4-4523-9b63-f076820b1470",
+                            ConcurrencyStamp = "9e359980-8923-4a1a-ae1d-2e438b0ecbe8",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "59613fa4-cadd-4a5f-8d2f-8264ec4a8c3e",
-                            ConcurrencyStamp = "f114af1b-128e-438f-81f6-d80c36117054",
+                            Id = "2e5fb241-5583-4779-82a8-de99e9274ca6",
+                            ConcurrencyStamp = "b3d1f682-c3b0-4123-87ef-826b0dfd1cdc",
                             Name = "Staff",
                             NormalizedName = "STAFF"
                         });
@@ -437,6 +437,22 @@ namespace PCWeb.Migrations
                     b.HasKey("FeeId");
 
                     b.ToTable("Fees");
+
+                    b.HasData(
+                        new
+                        {
+                            FeeId = 1,
+                            FeeAmount = 3200.0,
+                            FeeName = "Phí vận chuyển",
+                            FeeUnit = "vnd/kg"
+                        },
+                        new
+                        {
+                            FeeId = 2,
+                            FeeAmount = 10.0,
+                            FeeName = "Thuế VAT",
+                            FeeUnit = "%"
+                        });
                 });
 
             modelBuilder.Entity("PCWeb.Models.Gift", b =>
@@ -1513,7 +1529,8 @@ namespace PCWeb.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProductCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("ProductDescription")
                         .HasColumnType("nvarchar(max)");

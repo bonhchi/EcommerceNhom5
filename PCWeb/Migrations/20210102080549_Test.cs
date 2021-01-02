@@ -222,7 +222,7 @@ namespace PCWeb.Migrations
                 {
                     ProductId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductCode = table.Column<string>(nullable: true),
+                    ProductCode = table.Column<string>(maxLength: 20, nullable: true),
                     ProductSeries = table.Column<string>(nullable: false),
                     ProductName = table.Column<string>(nullable: false),
                     ProductImage = table.Column<string>(nullable: true),
@@ -880,9 +880,9 @@ namespace PCWeb.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "62e25443-0237-45f2-b40e-50dacf8ea45f", "f45aaf17-43bd-480d-a98a-8eff8bb89146", "Customer", "CUSTOMER" },
-                    { "6b4f7f39-0c26-4a9e-8a3f-2cc79b1c94f9", "57b09a85-e3ab-421f-be35-c961b5db3af6", "Administrator", "ADMINISTRATOR" },
-                    { "59613fa4-cadd-4a5f-8d2f-8264ec4a8c3e", "f114af1b-128e-438f-81f6-d80c36117054", "Staff", "STAFF" }
+                    { "e64b760a-775f-42e4-9cef-f6e1210dbeb6", "ed016e4a-95be-4291-b25f-10a8f5a6a9c7", "Customer", "CUSTOMER" },
+                    { "34cee117-46b4-4523-9b63-f076820b1470", "9e359980-8923-4a1a-ae1d-2e438b0ecbe8", "Administrator", "ADMINISTRATOR" },
+                    { "2e5fb241-5583-4779-82a8-de99e9274ca6", "b3d1f682-c3b0-4123-87ef-826b0dfd1cdc", "Staff", "STAFF" }
                 });
 
             migrationBuilder.InsertData(
@@ -909,14 +909,23 @@ namespace PCWeb.Migrations
                 columns: new[] { "ComponentCategoryId", "ComponentCategoryName" },
                 values: new object[,]
                 {
-                    { 8, "Case Máy tính" },
-                    { 1, "CPU" },
-                    { 2, "Card đồ họa" },
-                    { 3, "Lưu trữ" },
-                    { 4, "Mainboard" },
-                    { 5, "Tản nhiệt" },
+                    { 7, "Nguồn" },
                     { 6, "RAM" },
-                    { 7, "Nguồn" }
+                    { 5, "Tản nhiệt" },
+                    { 4, "Mainboard" },
+                    { 3, "Lưu trữ" },
+                    { 2, "Card đồ họa" },
+                    { 8, "Case Máy tính" },
+                    { 1, "CPU" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Fees",
+                columns: new[] { "FeeId", "FeeAmount", "FeeName", "FeeUnit" },
+                values: new object[,]
+                {
+                    { 1, 3200.0, "Phí vận chuyển", "vnd/kg" },
+                    { 2, 10.0, "Thuế VAT", "%" }
                 });
 
             migrationBuilder.InsertData(
@@ -924,11 +933,11 @@ namespace PCWeb.Migrations
                 columns: new[] { "LaptopCategoryId", "LaptopCategoryName" },
                 values: new object[,]
                 {
-                    { 5, "Laptop Cũ" },
-                    { 4, "Laptop Workstation" },
-                    { 2, "Laptop Gaming" },
                     { 1, "Laptop Phổ Thông" },
-                    { 3, "Laptop Doanh Nhân" }
+                    { 3, "Laptop Doanh Nhân" },
+                    { 4, "Laptop Workstation" },
+                    { 5, "Laptop Cũ" },
+                    { 2, "Laptop Gaming" }
                 });
 
             migrationBuilder.InsertData(
@@ -970,10 +979,10 @@ namespace PCWeb.Migrations
                 columns: new[] { "UserGradeId", "UserGradeDiscount", "UserGradeEntryPoint", "UserGradeName" },
                 values: new object[,]
                 {
-                    { 6, 3.0, 5000, "Khách hàng kim cương" },
+                    { 2, 1.0, 200, "Khách hàng đồng" },
                     { 4, 1.5, 1500, "Khách hàng vàng" },
                     { 5, 2.0, 2000, "Khách hàng bạch kim" },
-                    { 2, 1.0, 200, "Khách hàng đồng" },
+                    { 6, 3.0, 5000, "Khách hàng kim cương" },
                     { 1, 0.0, 0, "Khách hàng thường" },
                     { 3, 1.25, 800, "Khách hàng bạc" }
                 });
