@@ -109,7 +109,6 @@ namespace PCWeb.Areas.Admin.Controllers
             {
                 changeCondition.OrderCheckout = "Đã thanh toán";
             }
-            dataContext.SaveChanges();
             if(order.OrderCheckout == "Đã thanh toán")
             {
                 var orderList = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
@@ -151,12 +150,19 @@ namespace PCWeb.Areas.Admin.Controllers
                 await _userManager.UpdateAsync(user);
             }
             List<OrderDetail> orderDetails = dataContext.OrderDetails.Where(p => p.OrderId == id).ToList();
+            List<Product> products = new List<Product>();
             foreach (var item in orderDetails)
             {
-                Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId);
-                RevenueDetail revenueDetail = dataContext.RevenueDetails.FirstOrDefault(p => p.RevenueId == revenue.RevenueId);
-                revenueDetail.Quantity += item.Quantity;
-                revenueDetail.PriceReality = item.Product.ProductPriceReality;
+                Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                products.Add(product);
+                var revenueId = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId).RevenueId;
+                dataContext.RevenueDetails.Add(new RevenueDetail()
+                {
+                    RevenueId = revenueId,
+                    DateIssue = DateTime.Now,
+                    Quantity = item.Quantity,
+                    PriceReality = item.Product.ProductPrice
+                });
             }
             dataContext.SaveChanges();
             return RedirectToAction("Index", "Order");

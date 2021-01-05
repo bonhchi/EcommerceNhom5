@@ -265,13 +265,19 @@ namespace PCWeb.Controllers
                             user.UserPoint += Convert.ToInt32(point);
                             await _userManager.UpdateAsync(user);
                         }
-                        //bug
-                        foreach(var item in cart)
+                        List<Product> products = new List<Product>();
+                        foreach (var item in cart)
                         {
-                            Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId);
-                            RevenueDetail revenueDetail = dataContext.RevenueDetails.FirstOrDefault(p => p.RevenueId == revenue.RevenueId);
-                            revenueDetail.Quantity += item.Quantity;
-                            revenueDetail.PriceReality = item.Product.ProductPriceReality;
+                            Product product = dataContext.Products.FirstOrDefault(p => p.ProductId == item.Product.ProductId);
+                            products.Add(product);
+                            var revenueId = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.Product.ProductId).RevenueId;
+                            dataContext.RevenueDetails.Add(new RevenueDetail()
+                            {
+                                RevenueId = revenueId,
+                                DateIssue = DateTime.Now,
+                                Quantity = item.Quantity,
+                                PriceReality = item.Product.ProductPrice
+                            });
                         }
                         dataContext.SaveChanges();
                         cart.Clear();
