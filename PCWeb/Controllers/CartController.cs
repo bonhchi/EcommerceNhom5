@@ -265,6 +265,7 @@ namespace PCWeb.Controllers
                             user.UserPoint += Convert.ToInt32(point);
                             await _userManager.UpdateAsync(user);
                         }
+                        //bug
                         foreach(var item in cart)
                         {
                             Revenue revenue = dataContext.Revenues.FirstOrDefault(p => p.ProductId == item.ProductId);
